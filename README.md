@@ -1,36 +1,111 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Luna Info Page
 
-## Getting Started
+A dark, luxurious info page for an OnlyFans model's subscribers. Built with Next.js, TypeScript, and Tailwind CSS.
 
-First, run the development server:
+## Live URL
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+https://p01--info-page--wr64nvjslpdn.code.run
+
+## Features
+
+- **Get to Know You** — Questionnaire form for subscribers to tell the model their preferences
+- **PPV Videos** — Grid of pay-per-view videos with prices and descriptions
+- **Custom Request** — Interactive calculator with video type, duration, and accessory toggles (~$200 average)
+
+## Tech Stack
+
+- **Framework**: Next.js 16 (App Router)
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS 4
+- **Database**: SQLite (better-sqlite3)
+- **Deployment**: Northflank (Docker)
+
+## Project Structure
+
+```
+info-page/
+├── src/
+│   ├── app/
+│   │   ├── api/
+│   │   │   ├── questionnaire/route.ts   # POST questionnaire submissions
+│   │   │   └── custom-request/route.ts  # POST custom requests
+│   │   ├── globals.css                  # Design system (CSS variables, animations)
+│   │   ├── layout.tsx                   # Root layout
+│   │   └── page.tsx                     # Main page with 3 tabs + all components
+│   └── lib/
+│       └── db.ts                        # SQLite database setup
+├── data/                                # SQLite database files
+├── docs/
+│   └── DESIGN_SYSTEM.md                 # Design tokens and principles
+├── Dockerfile                           # Multi-stage Docker build
+├── service.json                         # Northflank service config
+└── package.json
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Design System
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Dark & luxurious aesthetic:
+- **Backgrounds**: Near-black with warm undertones (#0a0a0c → #22222e)
+- **Accent**: Rich gold (#d4a853) used sparingly for CTAs and highlights
+- **Typography**: Serif headings (Georgia), clean sans-serif body (Inter)
+- **Effects**: Subtle gold glows, smooth spring animations, generous whitespace
+- **Mobile-first**: Responsive grid layouts, touch-friendly controls
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## API Routes
 
-## Learn More
+| Method | Path | Description |
+|--------|------|-------------|
+| POST | `/api/questionnaire` | Submit questionnaire (name, email, preferences, fantasies, frequency, notes) |
+| POST | `/api/custom-request` | Submit custom request (name, email, minutes, type, accessories, price) |
 
-To learn more about Next.js, take a look at the following resources:
+## Database Schema
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### questionnaire_submissions
+| Column | Type | Description |
+|--------|------|-------------|
+| id | INTEGER PK | Auto-increment |
+| name | TEXT | Subscriber name |
+| email | TEXT | Subscriber email |
+| favorite_content | TEXT | Preferred content type |
+| fantasies | TEXT | Free-text fantasies |
+| frequency | TEXT | Content frequency preference |
+| additional_notes | TEXT | Free-text notes |
+| created_at | DATETIME | Timestamp |
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### custom_requests
+| Column | Type | Description |
+|--------|------|-------------|
+| id | INTEGER PK | Auto-increment |
+| name | TEXT | Subscriber name |
+| email | TEXT | Subscriber email |
+| minutes | INTEGER | Video duration |
+| video_type | TEXT | solo/pov/couple/lesbian |
+| accessories | TEXT | JSON array of selected accessories |
+| special_requests | TEXT | Free-text requests |
+| estimated_price | INTEGER | Calculated price in USD |
+| created_at | DATETIME | Timestamp |
 
-## Deploy on Vercel
+## Custom Request Pricing
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- **Solo**: $80 base (× minutes/15)
+- **POV**: $100 base (× minutes/15)
+- **Couple**: $150 base (× minutes/15)
+- **Lesbian**: $140 base (× minutes/15)
+- **Accessories**: +$10-25 each
+- **Target average**: ~$200 per video
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Deployment
+
+Auto-deploys to Northflank on push to `main`.
+
+```bash
+git push origin main
+```
+
+## Development
+
+```bash
+npm install
+npm run dev      # http://localhost:3000
+npm run build    # Production build
+```
