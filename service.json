@@ -1,0 +1,47 @@
+{
+  "name": "info-page",
+  "description": "Luna VIP info page - dark luxurious design",
+  "billing": {
+    "deploymentPlan": "nf-compute-10"
+  },
+  "buildSource": "git",
+  "vcsData": {
+    "publicRepo": true,
+    "projectUrl": "https://github.com/ALee11235/luna-info-page",
+    "projectType": "github",
+    "projectBranch": "main",
+    "dockerWorkDir": "/",
+    "dockerFilePath": "/Dockerfile"
+  },
+  "buildSettings": {
+    "dockerfile": {
+      "configType": "default",
+      "dockerFilePath": "/Dockerfile",
+      "dockerWorkDir": "/"
+    },
+    "pathIgnoreRules": [],
+    "isAllowList": false,
+    "ciIgnoreFlagsEnabled": false,
+    "ciIgnoreFlags": ["[skip ci]", "[ci skip]", "[no ci]", "[skip nf]", "[nf skip]", "[northflank skip]", "[skip northflank]"],
+    "dockerCredentials": []
+  },
+  "deployment": {
+    "region": "us-central",
+    "instances": 1,
+    "storage": {
+      "ephemeralStorage": {
+        "storageSize": 1024
+      },
+      "shmSize": 64
+    }
+  },
+  "ports": [
+    {
+      "name": "p01",
+      "internalPort": 3000,
+      "protocol": "HTTP",
+      "public": true,
+      "disableNfDomain": false
+    }
+  ]
+}
