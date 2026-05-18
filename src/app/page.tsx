@@ -55,7 +55,7 @@ export default function Home() {
       {/* NAV */}
       <nav className="fixed top-0 left-0 right-0 z-50 glass">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 h-[70px] flex items-center justify-between">
-          <span className="text-2xl font-[var(--font-cormorant)] tracking-wider text-[var(--accent-primary)]">Luna</span>
+          <span className="text-2xl font-cormorant tracking-wider text-[var(--accent-primary)]">Luna</span>
           <div className="flex gap-1 sm:gap-2">
             {tabs.map((tab, i) => (
               <button
@@ -119,7 +119,7 @@ function QuestionnaireSection() {
           <div className="w-20 h-20 mx-auto mb-8 rounded-full bg-[var(--accent-soft)] flex items-center justify-center">
             <span className="text-4xl">💋</span>
           </div>
-          <h2 className="text-3xl sm:text-4xl font-[var(--font-cormorant)] mb-4 gold-gradient">Thank You, Baby</h2>
+          <h2 className="text-3xl sm:text-4xl font-cormorant mb-4 gold-gradient">Thank You, Baby</h2>
           <p className="text-[var(--text-secondary)] text-lg leading-relaxed">
             I can&apos;t wait to read your answers. I&apos;ll create content just for you.
           </p>
@@ -132,7 +132,7 @@ function QuestionnaireSection() {
     <section className="max-w-2xl mx-auto px-4 sm:px-6 py-16 sm:py-24">
       <div className="text-center mb-12 animate-fade-in-up">
         <div className="text-2xl mb-4 opacity-60">✦</div>
-        <h2 className="text-3xl sm:text-5xl font-[var(--font-cormorant)] mb-4 gold-gradient">Help Me Get to Know You</h2>
+        <h2 className="text-3xl sm:text-5xl font-cormorant mb-4 gold-gradient">Help Me Get to Know You</h2>
         <p className="text-[var(--text-secondary)] text-lg max-w-md mx-auto font-light leading-relaxed">
           Answer these questions so I can create the perfect content just for you
         </p>
@@ -221,7 +221,7 @@ function PpvSection() {
     <section className="max-w-6xl mx-auto px-4 sm:px-6 py-16 sm:py-24">
       <div className="text-center mb-12 animate-fade-in-up">
         <span className="text-xs tracking-[0.25em] uppercase text-[var(--accent-primary)] mb-3 block font-medium">Pay Per View</span>
-        <h2 className="text-3xl sm:text-5xl font-[var(--font-cormorant)] mb-4 gold-gradient">Exclusive Videos</h2>
+        <h2 className="text-3xl sm:text-5xl font-cormorant mb-4 gold-gradient">Exclusive Videos</h2>
         <p className="text-[var(--text-secondary)] text-lg max-w-md mx-auto font-light leading-relaxed">
           Each video made with intention. Find the ones that speak to you.
         </p>
@@ -244,7 +244,7 @@ function PpvSection() {
               </div>
             </div>
             <div className="p-4">
-              <h3 className="font-[var(--font-cormorant)] text-lg font-semibold text-[var(--text-primary)] mb-1">{video.title}</h3>
+              <h3 className="font-cormorant text-lg font-semibold text-[var(--text-primary)] mb-1">{video.title}</h3>
               <p className="text-sm text-[var(--text-muted)] leading-relaxed mb-3 font-light">{video.description}</p>
               <div className="flex items-center justify-between">
                 <span className="text-xs text-[var(--text-muted)]">{video.duration}</span>
@@ -293,7 +293,7 @@ function CustomRequestSection() {
           <div className="w-20 h-20 mx-auto mb-8 rounded-full bg-[var(--accent-soft)] flex items-center justify-center">
             <span className="text-4xl">🎬</span>
           </div>
-          <h2 className="text-3xl sm:text-4xl font-[var(--font-cormorant)] mb-4 gold-gradient">Request Received</h2>
+          <h2 className="text-3xl sm:text-4xl font-cormorant mb-4 gold-gradient">Request Received</h2>
           <p className="text-[var(--text-secondary)] text-lg leading-relaxed mb-4 font-light">
             I&apos;ll start working on your custom video right away.
           </p>
@@ -307,7 +307,7 @@ function CustomRequestSection() {
     <section className="max-w-3xl mx-auto px-4 sm:px-6 py-16 sm:py-24">
       <div className="text-center mb-12 animate-fade-in-up">
         <span className="text-xs tracking-[0.25em] uppercase text-[var(--accent-primary)] mb-3 block font-medium">Premium Service</span>
-        <h2 className="text-3xl sm:text-5xl font-[var(--font-cormorant)] mb-4 gold-gradient">Custom Request</h2>
+        <h2 className="text-3xl sm:text-5xl font-cormorant mb-4 gold-gradient">Custom Request</h2>
         <p className="text-[var(--text-secondary)] text-lg max-w-md mx-auto font-light leading-relaxed">
           Build your dream video. Every detail, your way.
         </p>
@@ -398,7 +398,7 @@ function CustomRequestSection() {
         {/* Price */}
         <div className="rounded-2xl border border-[var(--border-default)] bg-[var(--bg-card)] p-6 text-center gold-glow">
           <div className="text-xs text-[var(--text-muted)] mb-1 tracking-[0.2em] uppercase">Estimated Price</div>
-          <div className="text-5xl font-[var(--font-cormorant)] font-semibold text-[var(--accent-primary)]">${price}</div>
+          <div className="text-5xl font-cormorant font-semibold text-[var(--accent-primary)]">${price}</div>
           <div className="text-xs text-[var(--text-muted)] mt-2">
             {minutes} min · {videoTypes.find((v) => v.id === videoType)?.label}
             {accs.length > 0 && ` · ${accs.length} extras`}

@@ -64,7 +64,7 @@ body {
 
 /* ===== TYPOGRAPHY ===== */
 h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-cormorant), 'Cormorant Garamond', 'Georgia', 'Times New Roman', serif;
+  font-family: var(--font-cormorant), 'Cormorant Garamond', Georgia, serif;
   font-weight: 400;
   letter-spacing: -0.01em;
   line-height: 1.2;
@@ -153,6 +153,11 @@ h1, h2, h3, h4, h5, h6 {
 .hover-lift:hover {
   transform: translateY(-4px);
   box-shadow: var(--shadow-lg), var(--shadow-glow);
+}
+
+/* ===== CUSTOM FONT CLASSES ===== */
+.font-cormorant {
+  font-family: var(--font-cormorant), 'Cormorant Garamond', Georgia, serif;
 }
 
 /* ===== GLASS EFFECT ===== */

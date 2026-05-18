@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Luna — Mobile First</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #1a1412;
+    --surface: #241e1c;
+    --card: #2e2623;
+    --text: #f5ede6;
+    --muted: #9e8e84;
+    --muted2: #7a6b62;
+    --accent: #d4a853;
+    --accent-warm: #e8c97a;
+    --accent-soft: rgba(212,168,83,0.12);
+    --border: #3d3430;
+  }
+  body {
+    font-family: 'DM Sans', -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    padding-bottom: 80px; /* space for sticky bottom */
+  }
+
+  /* ===== PROFILE HEADER ===== */
+  .profile {
+    padding: 2.5rem 1.5rem 1.5rem;
+    text-align: center;
+    position: relative;
+  }
+  .profile::before {
+    content: '';
+    position: absolute;
+    top: -50%; left: 50%;
+    transform: translateX(-50%);
+    width: 500px; height: 500px;
+    background: radial-gradient(ellipse, rgba(212,168,83,0.06) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .avatar {
+    width: 80px; height: 80px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), var(--accent-warm));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    margin: 0 auto 1rem;
+    position: relative;
+    z-index: 1;
+  }
+  .profile-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.75rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin-bottom: 0.25rem;
+  }
+  .profile-bio {
+    font-size: 0.85rem;
+    color: var(--muted);
+    font-weight: 300;
+    line-height: 1.6;
+    max-width: 300px;
+    margin: 0 auto;
+  }
+
+  /* ===== SECTION TABS (Linktree-style horizontal scroll) ===== */
+  .section-tabs {
+    display: flex;
+    gap: 0.5rem;
+    padding: 1rem 1.5rem;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .section-tabs::-webkit-scrollbar { display: none; }
+  .section-tab {
+    flex-shrink: 0;
+    padding: 0.6rem 1.25rem;
+    border-radius: 100px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    cursor: pointer;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--muted);
+    transition: all 0.3s;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+  }
+  .section-tab.active {
+    background: var(--accent-soft);
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+
+  /* ===== CONTENT PANELS ===== */
+  .panel { display: none; padding: 0.5rem 1.5rem 2rem; }
+  .panel.active { display: block; }
+
+  /* ===== LINK-STYLE BUTTONS (for Videos) ===== */
+  .link-btn {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.25rem;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 1rem;
+    margin-bottom: 0.75rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    min-height: 60px;
+    text-decoration: none;
+    color: var(--text);
+    width: 100%;
+    text-align: left;
+  }
+  .link-btn:hover {
+    border-color: var(--accent);
+    transform: scale(1.01);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  }
+  .link-btn .icon {
+    width: 48px; height: 48px;
+    border-radius: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    flex-shrink: 0;
+  }
+  .link-btn .content { flex: 1; min-width: 0; }
+  .link-btn .title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.05rem;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .link-btn .desc {
+    font-size: 0.75rem;
+    color: var(--muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .link-btn .price {
+    color: var(--accent);
+    font-weight: 600;
+    font-size: 0.9rem;
+    flex-shrink: 0;
+  }
+  .link-btn .arrow {
+    color: var(--muted2);
+    font-size: 1rem;
+    flex-shrink: 0;
+  }
+
+  /* ===== SECTION HEADERS ===== */
+  .panel-header {
+    padding: 1.5rem 0 1rem;
+    text-align: center;
+  }
+  .panel-header .label {
+    font-size: 0.65rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+  }
+  .panel-header h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.75rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+  .panel-header p {
+    font-size: 0.85rem;
+    color: var(--muted);
+    font-weight: 300;
+    line-height: 1.6;
+    max-width: 300px;
+    margin: 0 auto;
+  }
+
+  /* ===== FORM ELEMENTS (large touch targets) ===== */
+  .form-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .form-label {
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 500;
+    margin-bottom: 0.35rem;
+    display: block;
+  }
+  .form-input {
+    width: 100%;
+    padding: 1rem 1rem;
+    background: var(--card);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem;
+    border-radius: 1rem;
+    outline: none;
+    transition: all 0.3s;
+    min-height: 52px;
+    -webkit-appearance: none;
+  }
+  .form-input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-soft);
+  }
+  textarea.form-input { resize: none; min-height: 100px; }
+
+  /* SELECT */
+  .form-select {
+    width: 100%;
+    padding: 1rem 1rem;
+    background: var(--card);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem;
+    border-radius: 1rem;
+    outline: none;
+    min-height: 52px;
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%239e8e84' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+  }
+
+  /* TOGGLE CHIPS */
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .chip {
+    padding: 0.6rem 1rem;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    font-size: 0.8rem;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.3s;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+  }
+  .chip.on {
+    background: var(--accent-soft);
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  /* GRID OF BUTTONS (2 col) */
+  .btn-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.65rem;
+  }
+  .type-btn {
+    padding: 1rem;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 1rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    min-height: 80px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .type-btn .emoji { font-size: 1.5rem; margin-bottom: 0.25rem; }
+  .type-btn .name { font-size: 0.8rem; font-weight: 500; color: var(--muted); }
+  .type-btn .from { font-size: 0.65rem; color: var(--muted2); margin-top: 0.15rem; }
+  .type-btn.selected {
+    border-color: var(--accent);
+    background: var(--accent-soft);
+  }
+  .type-btn.selected .name { color: var(--accent); }
+
+  /* RANGE SLIDER */
+  .range-wrap { padding: 0.5rem 0; }
+  .range-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+  }
+  .range-header label { font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); font-weight: 500; }
+  .range-value { color: var(--accent); font-weight: 600; font-size: 1rem; }
+  input[type="range"] {
+    width: 100%;
+    height: 6px;
+    -webkit-appearance: none;
+    appearance: none;
+    background: var(--card);
+    border-radius: 3px;
+    outline: none;
+  }
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 24px; height: 24px;
+    background: var(--accent);
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(212,168,83,0.3);
+  }
+  .range-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.65rem;
+    color: var(--muted2);
+    margin-top: 0.5rem;
+  }
+
+  /* EXTRA TOGGLES */
+  .extra-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.875rem 1rem;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 1rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    min-height: 52px;
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+  .extra-toggle.on {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: var(--accent-soft);
+  }
+  .extra-toggle .plus { font-size: 0.7rem; opacity: 0.5; }
+
+  /* SUBMIT BUTTON */
+  .submit-btn {
+    width: 100%;
+    padding: 1rem;
+    background: var(--accent);
+    color: var(--bg);
+    font-weight: 600;
+    font-size: 0.85rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border: none;
+    border-radius: 100px;
+    cursor: pointer;
+    transition: all 0.3s;
+    min-height: 52px;
+    margin-top: 0.5rem;
+  }
+  .submit-btn:hover {
+    background: var(--accent-warm);
+    box-shadow: 0 0 30px rgba(212,168,83,0.2);
+  }
+
+  /* STICKY PRICE BAR (mobile) */
+  .sticky-price {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    padding: 0.75rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 50;
+    backdrop-filter: blur(12px);
+  }
+  .sticky-price .info { }
+  .sticky-price .label { font-size: 0.65rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; }
+  .sticky-price .amount { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; color: var(--accent); font-weight: 600; }
+  .sticky-price .detail { font-size: 0.7rem; color: var(--muted2); }
+  .sticky-price .btn {
+    padding: 0.75rem 1.5rem;
+    background: var(--accent);
+    color: var(--bg);
+    font-weight: 600;
+    font-size: 0.8rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    border: none;
+    border-radius: 100px;
+    cursor: pointer;
+    min-height: 44px;
+  }
+
+  /* SUCCESS STATE */
+  .success-state {
+    text-align: center;
+    padding: 3rem 1.5rem;
+  }
+  .success-state .icon {
+    width: 72px; height: 72px;
+    border-radius: 50%;
+    background: var(--accent-soft);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    margin: 0 auto 1.5rem;
+  }
+  .success-state h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.75rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+  }
+  .success-state p {
+    font-size: 0.9rem;
+    color: var(--muted);
+    font-weight: 300;
+    line-height: 1.7;
+  }
+
+  /* FOOTER */
+  .footer {
+    text-align: center;
+    padding: 2rem 1.5rem;
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted2);
+  }
+
+  /* ORNAMENT */
+  .ornament { text-align: center; font-size: 1.25rem; opacity: 0.4; margin-bottom: 0.75rem; }
+
+  /* HIDE STICKY ON DESKTOP */
+  @media (min-width: 768px) {
+    .sticky-price { display: none; }
+    body { padding-bottom: 0; }
+  }
+</style>
+</head>
+<body>
+
+<!-- PROFILE HEADER (Linktree-style) -->
+<div class="profile">
+  <div class="avatar">✨</div>
+  <div class="profile-name">Luna</div>
+  <div class="profile-bio">Exclusive content & custom requests. Made just for you.</div>
+</div>
+
+<!-- SECTION TABS (horizontal scroll) -->
+<div class="section-tabs">
+  <div class="section-tab active" onclick="showPanel(0, this)">✦ Get to Know You</div>
+  <div class="section-tab" onclick="showPanel(1, this)">🎬 Videos</div>
+  <div class="section-tab" onclick="showPanel(2, this)">💫 Custom Request</div>
+</div>
+
+<!-- PANEL 0: QUESTIONNAIRE -->
+<div class="panel active" id="panel-0">
+  <div class="panel-header">
+    <div class="label">For My Subscribers</div>
+    <h2>Get to Know You</h2>
+    <p>Answer these questions so I can create the perfect content just for you</p>
+  </div>
+
+  <div class="form-stack">
+    <div>
+      <label class="form-label">Your Name</label>
+      <input type="text" class="form-input" placeholder="What should I call you?">
+    </div>
+    <div>
+      <label class="form-label">Email</label>
+      <input type="email" class="form-input" placeholder="your@email.com">
+    </div>
+    <div>
+      <label class="form-label">Favorite Content Type</label>
+      <select class="form-select">
+        <option value="">Select one...</option>
+        <option>Solo / Masturbation</option>
+        <option>POV</option>
+        <option>Fetish / BDSM</option>
+        <option>Anal</option>
+        <option>Lesbian / Girl-Girl</option>
+        <option>Couple Content</option>
+        <option>Custom Requests</option>
+      </select>
+    </div>
+    <div>
+      <label class="form-label">Fantasies You'd Like Me to Fulfill</label>
+      <textarea class="form-input" placeholder="Tell me everything..." rows="3"></textarea>
+    </div>
+    <div>
+      <label class="form-label" style="margin-bottom:0.5rem;">How Often Do You Want New Content?</label>
+      <div class="chips">
+        <div class="chip on" onclick="this.classList.toggle('on')">Daily</div>
+        <div class="chip" onclick="this.classList.toggle('on')">Few times a week</div>
+        <div class="chip" onclick="this.classList.toggle('on')">Weekly</div>
+        <div class="chip" onclick="this.classList.toggle('on')">Whenever inspired</div>
+      </div>
+    </div>
+    <div>
+      <label class="form-label">Anything Else?</label>
+      <textarea class="form-input" placeholder="Special requests, preferences..." rows="2"></textarea>
+    </div>
+    <button class="submit-btn">Submit</button>
+  </div>
+</div>
+
+<!-- PANEL 1: VIDEOS (Linktree-style link list) -->
+<div class="panel" id="panel-1">
+  <div class="panel-header">
+    <div class="label">Pay Per View</div>
+    <h2>Exclusive Videos</h2>
+    <p>Tap to unlock. Each one made with you in mind.</p>
+  </div>
+
+  <a class="link-btn" href="#">
+    <div class="icon" style="background: linear-gradient(135deg, #2a2028, #1a1820);">🚿</div>
+    <div class="content">
+      <div class="title">Shower Show</div>
+      <div class="desc">Steamy solo shower · 12 min</div>
+    </div>
+    <div class="price">$15</div>
+    <div class="arrow">→</div>
+  </a>
+
+  <a class="link-btn" href="#">
+    <div class="icon" style="background: linear-gradient(135deg, #1a1820, #201828);">🌙</div>
+    <div class="content">
+      <div class="title">Late Night Vibes</div>
+      <div class="desc">Favorite lingerie · 18 min</div>
+    </div>
+    <div class="price">$20</div>
+    <div class="arrow">→</div>
+  </a>
+
+  <a class="link-btn" href="#">
+    <div class="icon" style="background: linear-gradient(135deg, #281a20, #1a1820);">🎀</div>
+    <div class="content">
+      <div class="title">Toy Time</div>
+      <div class="desc">Multiple orgasms · 22 min</div>
+    </div>
+    <div class="price">$25</div>
+    <div class="arrow">→</div>
+  </a>
+
+  <a class="link-btn" href="#">
+    <div class="icon" style="background: linear-gradient(135deg, #201a18, #281a18);">💃</div>
+    <div class="content">
+      <div class="title">Strip Tease</div>
+      <div class="desc">Slow seductive tease · 8 min</div>
+    </div>
+    <div class="price">$12</div>
+    <div class="arrow">→</div>
+  </a>
+
+  <a class="link-btn" href="#">
+    <div class="icon" style="background: linear-gradient(135deg, #181818, #1a1a1a);">⛓️</div>
+    <div class="content">
+      <div class="title">BDSM Play</div>
+      <div class="desc">Light bondage · 25 min</div>
+    </div>
+    <div class="price">$30</div>
+    <div class="arrow">→</div>
+  </a>
+
+  <a class="link-btn" href="#">
+    <div class="icon" style="background: linear-gradient(135deg, #281a28, #1a1820);">💕</div>
+    <div class="content">
+      <div class="title">Girlfriend Experience</div>
+      <div class="desc">Full POV · 30 min</div>
+    </div>
+    <div class="price">$35</div>
+    <div class="arrow">→</div>
+  </a>
+
+  <a class="link-btn" href="#">
+    <div class="icon" style="background: linear-gradient(135deg, #281a20, #1a1818);">🍑</div>
+    <div class="content">
+      <div class="title">Anal Play</div>
+      <div class="desc">Toys, very explicit · 20 min</div>
+    </div>
+    <div class="price">$40</div>
+    <div class="arrow">→</div>
+  </a>
+
+  <a class="link-btn" href="#">
+    <div class="icon" style="background: linear-gradient(135deg, #1a2028, #181a20);">💦</div>
+    <div class="content">
+      <div class="title">Cum Show</div>
+      <div class="desc">Multiple orgasms · 15 min</div>
+    </div>
+    <div class="price">$28</div>
+    <div class="arrow">→</div>
+  </a>
+</div>
+
+<!-- PANEL 2: CUSTOM REQUEST -->
+<div class="panel" id="panel-2">
+  <div class="panel-header">
+    <div class="label">Premium Service</div>
+    <h2>Custom Request</h2>
+    <p>Build your dream video. Every detail, your way.</p>
+  </div>
+
+  <div class="form-stack">
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.75rem;">
+      <div>
+        <label class="form-label">Name</label>
+        <input type="text" class="form-input" placeholder="Your name">
+      </div>
+      <div>
+        <label class="form-label">Email</label>
+        <input type="email" class="form-input" placeholder="you@email.com">
+      </div>
+    </div>
+
+    <div>
+      <label class="form-label" style="margin-bottom:0.5rem;">Video Type</label>
+      <div class="btn-grid">
+        <div class="type-btn selected" onclick="selectType(this)">
+          <span class="emoji">💋</span>
+          <span class="name">Solo</span>
+          <span class="from">from $80</span>
+        </div>
+        <div class="type-btn" onclick="selectType(this)">
+          <span class="emoji">🎥</span>
+          <span class="name">POV</span>
+          <span class="from">from $100</span>
+        </div>
+        <div class="type-btn" onclick="selectType(this)">
+          <span class="emoji">👫</span>
+          <span class="name">Couple</span>
+          <span class="from">from $150</span>
+        </div>
+        <div class="type-btn" onclick="selectType(this)">
+          <span class="emoji">👩‍❤️‍👩</span>
+          <span class="name">Lesbian</span>
+          <span class="from">from $140</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="range-wrap">
+      <div class="range-header">
+        <label>Duration</label>
+        <span class="range-value">15 min</span>
+      </div>
+      <input type="range" min="5" max="60" step="5" value="15">
+      <div class="range-labels">
+        <span>5</span><span>15</span><span>30</span><span>45</span><span>60</span>
+      </div>
+    </div>
+
+    <div>
+      <label class="form-label" style="margin-bottom:0.5rem;">Extras</label>
+      <div style="display:flex; flex-direction:column; gap:0.5rem;">
+        <div class="extra-toggle" onclick="this.classList.toggle('on')">
+          Dildo <span class="plus">+$20</span>
+        </div>
+        <div class="extra-toggle" onclick="this.classList.toggle('on')">
+          Vibrator <span class="plus">+$15</span>
+        </div>
+        <div class="extra-toggle" onclick="this.classList.toggle('on')">
+          Butt Plug <span class="plus">+$15</span>
+        </div>
+        <div class="extra-toggle" onclick="this.classList.toggle('on')">
+          Blindfold <span class="plus">+$10</span>
+        </div>
+        <div class="extra-toggle" onclick="this.classList.toggle('on')">
+          Bondage <span class="plus">+$15</span>
+        </div>
+        <div class="extra-toggle" onclick="this.classList.toggle('on')">
+          Special Outfit <span class="plus">+$25</span>
+        </div>
+        <div class="extra-toggle" onclick="this.classList.toggle('on')">
+          Heels <span class="plus">+$10</span>
+        </div>
+        <div class="extra-toggle" onclick="this.classList.toggle('on')">
+          Lingerie Set <span class="plus">+$20</span>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <label class="form-label">Special Requests</label>
+      <textarea class="form-input" placeholder="Describe your dream scene..." rows="3"></textarea>
+    </div>
+  </div>
+</div>
+
+<!-- STICKY PRICE BAR (mobile only) -->
+<div class="sticky-price" id="stickyPrice">
+  <div class="info">
+    <div class="label">Estimated</div>
+    <div class="amount">$80</div>
+    <div class="detail">15 min · Solo</div>
+  </div>
+  <div class="btn" onclick="alert('Submit!')">Submit Request</div>
+</div>
+
+<div class="footer">Exclusive Content for Subscribers</div>
+
+<script>
+  function showPanel(idx, el) {
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.section-tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('panel-' + idx).classList.add('active');
+    if (el) el.classList.add('active');
+
+    // Show/hide sticky price only on request panel
+    const sticky = document.getElementById('stickyPrice');
+    if (sticky) {
+      sticky.style.display = idx === 2 ? 'flex' : 'none';
+    }
+  }
+
+  function selectType(el) {
+    document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('selected'));
+    el.classList.add('selected');
+  }
+
+  // Initially hide sticky price
+  document.getElementById('stickyPrice').style.display = 'none';
+</script>
+</body>
+</html>
