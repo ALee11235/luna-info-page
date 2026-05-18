@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Luna — Warm & Intimate</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #1a1412;
+    --surface: #241e1c;
+    --surface-2: #2e2623;
+    --text: #f5ede6;
+    --muted: #9e8e84;
+    --accent: #d4a853;
+    --accent-warm: #e8c97a;
+    --accent-soft: rgba(212,168,83,0.15);
+    --border: #3d3430;
+    --rose: #c77d8e;
+  }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+    padding: 0 2rem;
+    height: 70px;
+    display: flex; align-items: center; justify-content: space-between;
+    background: rgba(26,20,18,0.88);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+  }
+  .logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.75rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+  }
+  .nav-tabs { display: flex; gap: 0.5rem; }
+  .nav-tab {
+    padding: 0.5rem 1.25rem;
+    border-radius: 100px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    cursor: pointer;
+    border: none;
+    background: transparent;
+    color: var(--muted);
+    transition: all 0.3s;
+  }
+  .nav-tab:hover { color: var(--text); background: var(--surface-2); }
+  .nav-tab.active {
+    background: var(--accent-soft);
+    color: var(--accent);
+  }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 6rem 2rem 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -20%; left: 50%;
+    transform: translateX(-50%);
+    width: 800px; height: 800px;
+    background: radial-gradient(ellipse, rgba(212,168,83,0.06) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .hero-ornament {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    opacity: 0.6;
+  }
+  .hero h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.75rem, 7vw, 5rem);
+    font-weight: 400;
+    line-height: 1.15;
+    margin-bottom: 1.5rem;
+    color: var(--text);
+  }
+  .hero h1 em {
+    font-style: italic;
+    color: var(--accent-warm);
+  }
+  .hero-sub {
+    font-size: 1.05rem;
+    color: var(--muted);
+    max-width: 440px;
+    margin: 0 auto 2.5rem;
+    font-weight: 300;
+    line-height: 1.8;
+  }
+  .hero-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem 2.5rem;
+    background: transparent;
+    color: var(--accent);
+    font-weight: 500;
+    font-size: 0.85rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border: 1px solid var(--accent);
+    cursor: pointer;
+    transition: all 0.4s;
+    text-decoration: none;
+    border-radius: 100px;
+  }
+  .hero-cta:hover {
+    background: var(--accent);
+    color: var(--bg);
+    box-shadow: 0 0 40px rgba(212,168,83,0.2);
+  }
+
+  /* SECTION */
+  section { padding: 5rem 2rem; }
+  .section-inner { max-width: 1200px; margin: 0 auto; }
+  .section-label {
+    font-size: 0.7rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.75rem;
+    font-weight: 500;
+  }
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 400;
+    margin-bottom: 0.75rem;
+  }
+  .section-desc {
+    color: var(--muted);
+    font-size: 0.95rem;
+    max-width: 480px;
+    line-height: 1.8;
+    font-weight: 300;
+  }
+
+  /* VIDEO GRID — Soft, rounded */
+  .video-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+    margin-top: 3rem;
+  }
+  .video-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 1.25rem;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    cursor: pointer;
+  }
+  .video-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 48px rgba(0,0,0,0.3);
+    border-color: var(--accent);
+  }
+  .video-card .thumb {
+    aspect-ratio: 3/4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .video-card .thumb::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 50%;
+    background: linear-gradient(to top, var(--surface), transparent);
+  }
+  .price-tag {
+    position: absolute;
+    bottom: 0.75rem;
+    left: 0.75rem;
+    background: var(--accent);
+    color: var(--bg);
+    padding: 0.3rem 0.8rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    border-radius: 100px;
+    z-index: 2;
+  }
+  .video-card .info { padding: 1.25rem; }
+  .video-card h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-bottom: 0.3rem;
+  }
+  .video-card p {
+    font-size: 0.8rem;
+    color: var(--muted);
+    line-height: 1.5;
+    font-weight: 300;
+  }
+  .video-card .meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 1rem;
+  }
+  .video-card .duration {
+    font-size: 0.7rem;
+    color: var(--muted);
+    font-weight: 400;
+  }
+  .video-card .unlock {
+    font-size: 0.75rem;
+    color: var(--accent);
+    font-weight: 500;
+  }
+
+  /* REQUEST SECTION */
+  .request-section {
+    background: linear-gradient(180deg, var(--surface) 0%, var(--bg) 100%);
+    border-top: 1px solid var(--border);
+  }
+  .request-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: start;
+  }
+  .request-form { display: flex; flex-direction: column; gap: 1.5rem; }
+  .form-group label {
+    display: block;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+  }
+  .form-group input,
+  .form-group textarea,
+  .form-group select {
+    width: 100%;
+    padding: 0.875rem 1.125rem;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    outline: none;
+    transition: all 0.3s;
+    border-radius: 0.75rem;
+  }
+  .form-group input:focus,
+  .form-group textarea:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-soft);
+  }
+  .type-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+  }
+  .type-btn {
+    padding: 1.125rem;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    border-radius: 1rem;
+  }
+  .type-btn:hover { border-color: var(--accent); color: var(--text); }
+  .type-btn.selected {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: var(--accent-soft);
+  }
+  .type-btn .emoji { font-size: 1.5rem; display: block; margin-bottom: 0.25rem; }
+  .type-btn .label { font-size: 0.85rem; font-weight: 500; }
+  .type-btn .from { font-size: 0.65rem; opacity: 0.5; margin-top: 0.15rem; }
+
+  .extras-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+  }
+  .extra-toggle {
+    padding: 0.75rem 1rem;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    cursor: pointer;
+    font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: all 0.3s;
+    border-radius: 0.75rem;
+  }
+  .extra-toggle:hover { border-color: var(--muted); }
+  .extra-toggle.on {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: var(--accent-soft);
+  }
+  .extra-toggle .plus { font-size: 0.7rem; opacity: 0.5; }
+
+  .price-display {
+    text-align: center;
+    padding: 2.5rem 2rem;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    border-radius: 1.25rem;
+    position: sticky;
+    top: 6rem;
+  }
+  .price-display .label {
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+  }
+  .price-display .amount {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 3.5rem;
+    color: var(--accent);
+    font-weight: 600;
+  }
+  .price-display .detail {
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin-top: 0.5rem;
+  }
+  .submit-btn {
+    width: 100%;
+    padding: 1rem;
+    margin-top: 1.5rem;
+    background: var(--accent);
+    color: var(--bg);
+    font-weight: 600;
+    font-size: 0.8rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s;
+    border-radius: 100px;
+  }
+  .submit-btn:hover {
+    background: var(--accent-warm);
+    box-shadow: 0 0 40px rgba(212,168,83,0.25);
+  }
+
+  /* FOOTER */
+  footer {
+    padding: 3rem 2rem;
+    text-align: center;
+    border-top: 1px solid var(--border);
+  }
+  footer p {
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  @media (max-width: 768px) {
+    .video-grid { grid-template-columns: repeat(2, 1fr); }
+    .request-layout { grid-template-columns: 1fr; gap: 2rem; }
+    .nav-tabs { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">Luna</div>
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="showTab('home', this)">Home</button>
+    <button class="nav-tab" onclick="showTab('videos', this)">Videos</button>
+    <button class="nav-tab" onclick="showTab('request', this)">Request</button>
+  </div>
+</nav>
+
+<div id="tab-home" class="tab-content active">
+  <div class="hero">
+    <div class="hero-ornament">✦</div>
+    <h1>Made for you, <em>with care</em></h1>
+    <p class="hero-sub">Intimate content crafted around your deepest desires. Every moment designed to make you feel seen.</p>
+    <a class="hero-cta" href="#" onclick="showTab('request', document.querySelectorAll('.nav-tab')[2]); return false;">✦ Request Custom Content</a>
+  </div>
+</div>
+
+<div id="tab-videos" class="tab-content">
+  <section>
+    <div class="section-inner">
+      <div class="section-label">Pay Per View</div>
+      <h2 class="section-title">Exclusive Videos</h2>
+      <p class="section-desc">Each video made with intention. Find the ones that speak to you.</p>
+      <div class="video-grid">
+        <div class="video-card">
+          <div class="thumb" style="background: linear-gradient(135deg, #2a2028, #1a1820);">
+            🚿<span class="price-tag">$15</span>
+          </div>
+          <div class="info">
+            <h3>Shower Show</h3>
+            <p>Steamy solo shower session, fully nude and wet</p>
+            <div class="meta"><span class="duration">12 min</span><span class="unlock">Unlock →</span></div>
+          </div>
+        </div>
+        <div class="video-card">
+          <div class="thumb" style="background: linear-gradient(135deg, #1a1820, #201828);">
+            🌙<span class="price-tag">$20</span>
+          </div>
+          <div class="info">
+            <h3>Late Night Vibes</h3>
+            <p>Playing with myself late at night in your favorite lingerie</p>
+            <div class="meta"><span class="duration">18 min</span><span class="unlock">Unlock →</span></div>
+          </div>
+        </div>
+        <div class="video-card">
+          <div class="thumb" style="background: linear-gradient(135deg, #281a20, #1a1820);">
+            🎀<span class="price-tag">$25</span>
+          </div>
+          <div class="info">
+            <h3>Toy Time</h3>
+            <p>Full session with my favorite toys, multiple orgasms</p>
+            <div class="meta"><span class="duration">22 min</span><span class="unlock">Unlock →</span></div>
+          </div>
+        </div>
+        <div class="video-card">
+          <div class="thumb" style="background: linear-gradient(135deg, #201a18, #281a18);">
+            💃<span class="price-tag">$12</span>
+          </div>
+          <div class="info">
+            <h3>Strip Tease</h3>
+            <p>Slow seductive strip tease with custom outfit</p>
+            <div class="meta"><span class="duration">8 min</span><span class="unlock">Unlock →</span></div>
+          </div>
+        </div>
+        <div class="video-card">
+          <div class="thumb" style="background: linear-gradient(135deg, #181818, #1a1a1a);">
+            ⛓️<span class="price-tag">$30</span>
+          </div>
+          <div class="info">
+            <h3>BDSM Play</h3>
+            <p>Light bondage and domination, just for you</p>
+            <div class="meta"><span class="duration">25 min</span><span class="unlock">Unlock →</span></div>
+          </div>
+        </div>
+        <div class="video-card">
+          <div class="thumb" style="background: linear-gradient(135deg, #281a28, #1a1820);">
+            💕<span class="price-tag">$35</span>
+          </div>
+          <div class="info">
+            <h3>Girlfriend Experience</h3>
+            <p>Full POV girlfriend experience, intimate and personal</p>
+            <div class="meta"><span class="duration">30 min</span><span class="unlock">Unlock →</span></div>
+          </div>
+        </div>
+        <div class="video-card">
+          <div class="thumb" style="background: linear-gradient(135deg, #281a20, #1a1818);">
+            🍑<span class="price-tag">$40</span>
+          </div>
+          <div class="info">
+            <h3>Anal Play</h3>
+            <p>Full anal play session with toys, very explicit</p>
+            <div class="meta"><span class="duration">20 min</span><span class="unlock">Unlock →</span></div>
+          </div>
+        </div>
+        <div class="video-card">
+          <div class="thumb" style="background: linear-gradient(135deg, #1a2028, #181a20);">
+            💦<span class="price-tag">$28</span>
+          </div>
+          <div class="info">
+            <h3>Cum Show</h3>
+            <p>Multiple orgasms, cum on command</p>
+            <div class="meta"><span class="duration">15 min</span><span class="unlock">Unlock →</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div id="tab-request" class="tab-content">
+  <section class="request-section">
+    <div class="section-inner">
+      <div class="request-layout">
+        <div>
+          <div class="section-label">Premium Service</div>
+          <h2 class="section-title">Custom Request</h2>
+          <p class="section-desc" style="margin-bottom:2rem;">Build your dream video. Every detail, your way.</p>
+          <div class="request-form">
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
+              <div class="form-group"><label>Your Name</label><input type="text" placeholder="What should I call you?"></div>
+              <div class="form-group"><label>Email</label><input type="email" placeholder="your@email.com"></div>
+            </div>
+            <div class="form-group">
+              <label>Video Type</label>
+              <div class="type-grid">
+                <div class="type-btn selected" onclick="selectType(this)"><span class="emoji">💋</span><span class="label">Solo</span><span class="from">from $80</span></div>
+                <div class="type-btn" onclick="selectType(this)"><span class="emoji">🎥</span><span class="label">POV</span><span class="from">from $100</span></div>
+                <div class="type-btn" onclick="selectType(this)"><span class="emoji">👫</span><span class="label">Couple</span><span class="from">from $150</span></div>
+                <div class="type-btn" onclick="selectType(this)"><span class="emoji">👩‍❤️‍👩</span><span class="label">Lesbian</span><span class="from">from $140</span></div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Accessories & Extras</label>
+              <div class="extras-grid">
+                <div class="extra-toggle" onclick="this.classList.toggle('on')">Dildo <span class="plus">+$20</span></div>
+                <div class="extra-toggle" onclick="this.classList.toggle('on')">Vibrator <span class="plus">+$15</span></div>
+                <div class="extra-toggle" onclick="this.classList.toggle('on')">Butt Plug <span class="plus">+$15</span></div>
+                <div class="extra-toggle" onclick="this.classList.toggle('on')">Blindfold <span class="plus">+$10</span></div>
+                <div class="extra-toggle" onclick="this.classList.toggle('on')">Bondage <span class="plus">+$15</span></div>
+                <div class="extra-toggle" onclick="this.classList.toggle('on')">Special Outfit <span class="plus">+$25</span></div>
+                <div class="extra-toggle" onclick="this.classList.toggle('on')">Heels <span class="plus">+$10</span></div>
+                <div class="extra-toggle" onclick="this.classList.toggle('on')">Lingerie Set <span class="plus">+$20</span></div>
+              </div>
+            </div>
+            <div class="form-group"><label>Special Requests</label><textarea rows="3" placeholder="Describe your dream scene in detail..."></textarea></div>
+          </div>
+        </div>
+        <div>
+          <div class="price-display">
+            <div class="label">Estimated Price</div>
+            <div class="amount">$80</div>
+            <div class="detail">15 min · Solo</div>
+          </div>
+          <button class="submit-btn">Submit Request</button>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<footer><p>Exclusive Content for Subscribers</p></footer>
+
+<script>
+  function showTab(tab, btn) {
+    document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.nav-tab').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + tab).classList.add('active');
+    if (btn) btn.classList.add('active');
+  }
+  function selectType(el) {
+    document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('selected'));
+    el.classList.add('selected');
+  }
+</script>
+</body>
+</html>

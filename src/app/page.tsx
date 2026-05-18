@@ -33,6 +33,17 @@ const accessoryOptions = [
   { id: "lingerie", label: "Lingerie Set", price: 20 },
 ];
 
+const gradients = [
+  "from-[#2a2028] to-[#1a1820]",
+  "from-[#1a1820] to-[#201828]",
+  "from-[#281a20] to-[#1a1820]",
+  "from-[#201a18] to-[#281a18]",
+  "from-[#181818] to-[#1a1a1a]",
+  "from-[#281a28] to-[#1a1820]",
+  "from-[#281a20] to-[#1a1818]",
+  "from-[#1a2028] to-[#181a20]",
+];
+
 // ===== MAIN PAGE =====
 
 export default function Home() {
@@ -40,11 +51,11 @@ export default function Home() {
   const tabs = ["Get to Know You", "PPV Videos", "Custom Request"];
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col noise">
       {/* NAV */}
       <nav className="fixed top-0 left-0 right-0 z-50 glass">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
-          <span className="text-xl font-[Georgia] tracking-wider gold-gradient">LUNA</span>
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 h-[70px] flex items-center justify-between">
+          <span className="text-2xl font-[var(--font-cormorant)] tracking-wider text-[var(--accent-primary)]">Luna</span>
           <div className="flex gap-1 sm:gap-2">
             {tabs.map((tab, i) => (
               <button
@@ -52,7 +63,7 @@ export default function Home() {
                 onClick={() => setActiveTab(i)}
                 className={`px-3 sm:px-5 py-2 rounded-full text-xs sm:text-sm font-medium tracking-wide transition-all duration-300 ${
                   activeTab === i
-                    ? "bg-[var(--accent-primary)] text-[var(--bg-primary)]"
+                    ? "bg-[var(--accent-soft)] text-[var(--accent-primary)]"
                     : "text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-elevated)]"
                 }`}
               >
@@ -64,7 +75,7 @@ export default function Home() {
       </nav>
 
       {/* CONTENT */}
-      <main className="flex-1 pt-16">
+      <main className="flex-1 pt-[70px]">
         <div className={`transition-opacity duration-300 ${activeTab === 0 ? "block" : "hidden"}`}>
           <QuestionnaireSection />
         </div>
@@ -78,7 +89,7 @@ export default function Home() {
 
       {/* FOOTER */}
       <footer className="py-8 text-center border-t border-[var(--border-subtle)]">
-        <p className="text-sm text-[var(--text-muted)] tracking-wider">EXCLUSIVE CONTENT FOR SUBSCRIBERS</p>
+        <p className="text-xs text-[var(--text-muted)] tracking-[0.2em] uppercase">Exclusive Content for Subscribers</p>
       </footer>
     </div>
   );
@@ -105,10 +116,10 @@ function QuestionnaireSection() {
     return (
       <section className="min-h-[80vh] flex items-center justify-center px-4">
         <div className="text-center animate-fade-in-up max-w-lg">
-          <div className="w-20 h-20 mx-auto mb-8 rounded-full bg-[var(--accent-glow)] flex items-center justify-center">
+          <div className="w-20 h-20 mx-auto mb-8 rounded-full bg-[var(--accent-soft)] flex items-center justify-center">
             <span className="text-4xl">💋</span>
           </div>
-          <h2 className="text-3xl sm:text-4xl font-[Georgia] mb-4 gold-gradient">Thank You, Baby</h2>
+          <h2 className="text-3xl sm:text-4xl font-[var(--font-cormorant)] mb-4 gold-gradient">Thank You, Baby</h2>
           <p className="text-[var(--text-secondary)] text-lg leading-relaxed">
             I can&apos;t wait to read your answers. I&apos;ll create content just for you.
           </p>
@@ -120,9 +131,9 @@ function QuestionnaireSection() {
   return (
     <section className="max-w-2xl mx-auto px-4 sm:px-6 py-16 sm:py-24">
       <div className="text-center mb-12 animate-fade-in-up">
-        <span className="text-sm tracking-[0.3em] uppercase text-[var(--accent-primary)] mb-4 block">For My Subscribers</span>
-        <h2 className="text-3xl sm:text-5xl font-[Georgia] mb-4 gold-gradient">Help Me Get to Know You</h2>
-        <p className="text-[var(--text-secondary)] text-lg max-w-md mx-auto">
+        <div className="text-2xl mb-4 opacity-60">✦</div>
+        <h2 className="text-3xl sm:text-5xl font-[var(--font-cormorant)] mb-4 gold-gradient">Help Me Get to Know You</h2>
+        <p className="text-[var(--text-secondary)] text-lg max-w-md mx-auto font-light leading-relaxed">
           Answer these questions so I can create the perfect content just for you
         </p>
       </div>
@@ -134,11 +145,11 @@ function QuestionnaireSection() {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-[var(--text-secondary)] mb-2">Favorite Content Type</label>
+          <label className="block text-xs font-medium text-[var(--text-secondary)] mb-2 uppercase tracking-[0.15em]">Favorite Content Type</label>
           <select
             value={form.favorite_content}
             onChange={(e) => set("favorite_content", e.target.value)}
-            className="w-full px-4 py-3.5 rounded-xl bg-[var(--bg-card)] border border-[var(--border-subtle)] text-[var(--text-primary)] outline-none focus:border-[var(--accent-primary)] transition-all duration-300 appearance-none"
+            className="w-full px-4 py-3.5 rounded-xl bg-[var(--bg-card)] border border-[var(--border-subtle)] text-[var(--text-primary)] outline-none focus:border-[var(--accent-primary)] focus:shadow-[0_0_0_3px_var(--accent-soft)] transition-all duration-300 appearance-none"
           >
             <option value="">Select one...</option>
             <option value="solo">Solo / Masturbation</option>
@@ -152,18 +163,18 @@ function QuestionnaireSection() {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-[var(--text-secondary)] mb-2">Fantasies You&apos;d Like Me to Fulfill</label>
+          <label className="block text-xs font-medium text-[var(--text-secondary)] mb-2 uppercase tracking-[0.15em]">Fantasies You&apos;d Like Me to Fulfill</label>
           <textarea
             value={form.fantasies}
             onChange={(e) => set("fantasies", e.target.value)}
             placeholder="Tell me everything... I want to know what gets you excited"
             rows={4}
-            className="w-full px-4 py-3.5 rounded-xl bg-[var(--bg-card)] border border-[var(--border-subtle)] text-[var(--text-primary)] placeholder-[var(--text-muted)] outline-none focus:border-[var(--accent-primary)] transition-all duration-300 resize-none"
+            className="w-full px-4 py-3.5 rounded-xl bg-[var(--bg-card)] border border-[var(--border-subtle)] text-[var(--text-primary)] placeholder-[var(--text-muted)] outline-none focus:border-[var(--accent-primary)] focus:shadow-[0_0_0_3px_var(--accent-soft)] transition-all duration-300 resize-none"
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-[var(--text-secondary)] mb-3">How Often Do You Want New Content?</label>
+          <label className="block text-xs font-medium text-[var(--text-secondary)] mb-3 uppercase tracking-[0.15em]">How Often Do You Want New Content?</label>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
             {["Daily", "Few times a week", "Weekly", "Whenever inspired"].map((opt) => (
               <button
@@ -171,7 +182,7 @@ function QuestionnaireSection() {
                 onClick={() => set("frequency", opt)}
                 className={`px-3 py-3 rounded-xl text-sm font-medium transition-all duration-300 border ${
                   form.frequency === opt
-                    ? "bg-[var(--accent-primary)] text-[var(--bg-primary)] border-[var(--accent-primary)]"
+                    ? "bg-[var(--accent-soft)] text-[var(--accent-primary)] border-[var(--accent-primary)]"
                     : "bg-[var(--bg-card)] text-[var(--text-secondary)] border-[var(--border-subtle)] hover:border-[var(--border-default)] hover:text-[var(--text-primary)]"
                 }`}
               >
@@ -182,19 +193,19 @@ function QuestionnaireSection() {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-[var(--text-secondary)] mb-2">Anything Else?</label>
+          <label className="block text-xs font-medium text-[var(--text-secondary)] mb-2 uppercase tracking-[0.15em]">Anything Else?</label>
           <textarea
             value={form.additional_notes}
             onChange={(e) => set("additional_notes", e.target.value)}
             placeholder="Special requests, preferences, things you love..."
             rows={3}
-            className="w-full px-4 py-3.5 rounded-xl bg-[var(--bg-card)] border border-[var(--border-subtle)] text-[var(--text-primary)] placeholder-[var(--text-muted)] outline-none focus:border-[var(--accent-primary)] transition-all duration-300 resize-none"
+            className="w-full px-4 py-3.5 rounded-xl bg-[var(--bg-card)] border border-[var(--border-subtle)] text-[var(--text-primary)] placeholder-[var(--text-muted)] outline-none focus:border-[var(--accent-primary)] focus:shadow-[0_0_0_3px_var(--accent-soft)] transition-all duration-300 resize-none"
           />
         </div>
 
         <button
           onClick={submit}
-          className="w-full py-4 rounded-xl bg-[var(--accent-primary)] text-[var(--bg-primary)] font-semibold text-lg uppercase tracking-wider hover:bg-[var(--accent-secondary)] transition-all duration-300 hover:shadow-[var(--shadow-glow-strong)]"
+          className="w-full py-4 rounded-full bg-[var(--accent-primary)] text-[var(--bg-primary)] font-semibold text-sm uppercase tracking-[0.15em] hover:bg-[var(--accent-secondary)] transition-all duration-300 hover:shadow-[0_0_40px_rgba(212,168,83,0.25)]"
         >
           Submit
         </button>
@@ -209,10 +220,10 @@ function PpvSection() {
   return (
     <section className="max-w-6xl mx-auto px-4 sm:px-6 py-16 sm:py-24">
       <div className="text-center mb-12 animate-fade-in-up">
-        <span className="text-sm tracking-[0.3em] uppercase text-[var(--accent-primary)] mb-4 block">Pay Per View</span>
-        <h2 className="text-3xl sm:text-5xl font-[Georgia] mb-4 gold-gradient">Exclusive Videos</h2>
-        <p className="text-[var(--text-secondary)] text-lg max-w-md mx-auto">
-          Tip to unlock these exclusive videos. Each one made with you in mind.
+        <span className="text-xs tracking-[0.25em] uppercase text-[var(--accent-primary)] mb-3 block font-medium">Pay Per View</span>
+        <h2 className="text-3xl sm:text-5xl font-[var(--font-cormorant)] mb-4 gold-gradient">Exclusive Videos</h2>
+        <p className="text-[var(--text-secondary)] text-lg max-w-md mx-auto font-light leading-relaxed">
+          Each video made with intention. Find the ones that speak to you.
         </p>
       </div>
 
@@ -220,21 +231,21 @@ function PpvSection() {
         {ppvVideos.map((video, i) => (
           <div
             key={video.id}
-            className="group relative rounded-2xl overflow-hidden bg-[var(--bg-card)] border border-[var(--border-subtle)] hover-lift animate-fade-in-up"
+            className="group rounded-2xl overflow-hidden bg-[var(--bg-card)] border border-[var(--border-subtle)] hover-lift animate-fade-in-up cursor-pointer"
             style={{ animationDelay: `${i * 50}ms` }}
           >
-            <div className="aspect-[3/4] bg-gradient-to-br from-[var(--bg-card)] to-[var(--bg-elevated)] flex items-center justify-center relative overflow-hidden">
+            <div className={`aspect-[3/4] bg-gradient-to-br ${gradients[i]} flex items-center justify-center relative overflow-hidden`}>
               <span className="text-6xl opacity-20 group-hover:opacity-40 group-hover:scale-110 transition-all duration-500">{video.emoji}</span>
-              <div className="absolute inset-0 bg-gradient-to-t from-[var(--bg-primary)] via-transparent to-transparent opacity-60" />
-              <div className="absolute bottom-0 left-0 right-0 p-4">
-                <span className="inline-block px-3 py-1 rounded-full bg-[var(--accent-primary)] text-[var(--bg-primary)] text-sm font-bold">
+              <div className="absolute inset-0 bg-gradient-to-t from-[var(--bg-card)] via-transparent to-transparent opacity-60" />
+              <div className="absolute bottom-3 left-3">
+                <span className="inline-block px-3 py-1 rounded-full bg-[var(--accent-primary)] text-[var(--bg-primary)] text-sm font-semibold">
                   ${video.price}
                 </span>
               </div>
             </div>
             <div className="p-4">
-              <h3 className="font-semibold text-[var(--text-primary)] mb-1">{video.title}</h3>
-              <p className="text-sm text-[var(--text-muted)] leading-relaxed mb-3">{video.description}</p>
+              <h3 className="font-[var(--font-cormorant)] text-lg font-semibold text-[var(--text-primary)] mb-1">{video.title}</h3>
+              <p className="text-sm text-[var(--text-muted)] leading-relaxed mb-3 font-light">{video.description}</p>
               <div className="flex items-center justify-between">
                 <span className="text-xs text-[var(--text-muted)]">{video.duration}</span>
                 <button className="text-sm text-[var(--accent-primary)] hover:text-[var(--accent-secondary)] transition-colors font-medium">
@@ -279,14 +290,14 @@ function CustomRequestSection() {
     return (
       <section className="min-h-[80vh] flex items-center justify-center px-4">
         <div className="text-center animate-fade-in-up max-w-lg">
-          <div className="w-20 h-20 mx-auto mb-8 rounded-full bg-[var(--accent-glow)] flex items-center justify-center">
+          <div className="w-20 h-20 mx-auto mb-8 rounded-full bg-[var(--accent-soft)] flex items-center justify-center">
             <span className="text-4xl">🎬</span>
           </div>
-          <h2 className="text-3xl sm:text-4xl font-[Georgia] mb-4 gold-gradient">Request Received</h2>
-          <p className="text-[var(--text-secondary)] text-lg leading-relaxed mb-4">
+          <h2 className="text-3xl sm:text-4xl font-[var(--font-cormorant)] mb-4 gold-gradient">Request Received</h2>
+          <p className="text-[var(--text-secondary)] text-lg leading-relaxed mb-4 font-light">
             I&apos;ll start working on your custom video right away.
           </p>
-          <p className="text-[var(--accent-primary)] text-sm">Estimated price: ${price}</p>
+          <p className="text-[var(--accent-primary)] text-sm font-medium">Estimated price: ${price}</p>
         </div>
       </section>
     );
@@ -295,10 +306,10 @@ function CustomRequestSection() {
   return (
     <section className="max-w-3xl mx-auto px-4 sm:px-6 py-16 sm:py-24">
       <div className="text-center mb-12 animate-fade-in-up">
-        <span className="text-sm tracking-[0.3em] uppercase text-[var(--accent-primary)] mb-4 block">Premium Service</span>
-        <h2 className="text-3xl sm:text-5xl font-[Georgia] mb-4 gold-gradient">Custom Request</h2>
-        <p className="text-[var(--text-secondary)] text-lg max-w-md mx-auto">
-          Build your dream video. Customize every detail.
+        <span className="text-xs tracking-[0.25em] uppercase text-[var(--accent-primary)] mb-3 block font-medium">Premium Service</span>
+        <h2 className="text-3xl sm:text-5xl font-[var(--font-cormorant)] mb-4 gold-gradient">Custom Request</h2>
+        <p className="text-[var(--text-secondary)] text-lg max-w-md mx-auto font-light leading-relaxed">
+          Build your dream video. Every detail, your way.
         </p>
       </div>
 
@@ -309,12 +320,11 @@ function CustomRequestSection() {
           <InputField label="Email" value={email} onChange={setEmail} placeholder="your@email.com" type="email" />
         </div>
 
-        {/* Divider */}
         <div className="border-t border-[var(--border-subtle)]" />
 
         {/* Video Type */}
         <div>
-          <label className="block text-sm font-medium text-[var(--text-secondary)] mb-3">Video Type</label>
+          <label className="block text-xs font-medium text-[var(--text-secondary)] mb-3 uppercase tracking-[0.15em]">Video Type</label>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
             {videoTypes.map((vt) => (
               <button
@@ -322,13 +332,13 @@ function CustomRequestSection() {
                 onClick={() => setVideoType(vt.id)}
                 className={`p-4 rounded-xl text-center transition-all duration-300 border ${
                   videoType === vt.id
-                    ? "bg-[var(--accent-primary)] border-[var(--accent-primary)] text-[var(--bg-primary)] shadow-[var(--shadow-glow)]"
+                    ? "bg-[var(--accent-soft)] border-[var(--accent-primary)] text-[var(--accent-primary)]"
                     : "bg-[var(--bg-card)] border-[var(--border-subtle)] text-[var(--text-secondary)] hover:border-[var(--border-default)]"
                 }`}
               >
                 <div className="text-2xl mb-1">{vt.emoji}</div>
-                <div className="font-semibold text-sm">{vt.label}</div>
-                <div className="text-xs mt-1 opacity-70">from ${vt.basePrice}</div>
+                <div className="font-medium text-sm">{vt.label}</div>
+                <div className="text-xs mt-1 opacity-50">from ${vt.basePrice}</div>
               </button>
             ))}
           </div>
@@ -337,7 +347,7 @@ function CustomRequestSection() {
         {/* Duration */}
         <div>
           <div className="flex items-center justify-between mb-3">
-            <label className="text-sm font-medium text-[var(--text-secondary)]">Duration</label>
+            <label className="text-xs font-medium text-[var(--text-secondary)] uppercase tracking-[0.15em]">Duration</label>
             <span className="text-[var(--accent-primary)] font-semibold">{minutes} min</span>
           </div>
           <input
@@ -350,25 +360,24 @@ function CustomRequestSection() {
           </div>
         </div>
 
-        {/* Divider */}
         <div className="border-t border-[var(--border-subtle)]" />
 
         {/* Accessories */}
         <div>
-          <label className="block text-sm font-medium text-[var(--text-secondary)] mb-3">Accessories & Extras</label>
+          <label className="block text-xs font-medium text-[var(--text-secondary)] mb-3 uppercase tracking-[0.15em]">Accessories & Extras</label>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
             {accessoryOptions.map((acc) => (
               <button
                 key={acc.id}
                 onClick={() => toggleAcc(acc.id)}
-                className={`px-3 py-3 rounded-xl text-sm font-medium transition-all duration-300 border ${
+                className={`px-3 py-3 rounded-xl text-sm font-medium transition-all duration-300 border flex items-center justify-between ${
                   accs.includes(acc.id)
-                    ? "bg-[var(--accent-primary)] border-[var(--accent-primary)] text-[var(--bg-primary)]"
+                    ? "bg-[var(--accent-soft)] border-[var(--accent-primary)] text-[var(--accent-primary)]"
                     : "bg-[var(--bg-card)] border-[var(--border-subtle)] text-[var(--text-secondary)] hover:border-[var(--border-default)]"
                 }`}
               >
-                {acc.label}
-                <span className="block text-xs mt-1 opacity-70">+${acc.price}</span>
+                <span>{acc.label}</span>
+                <span className="text-xs opacity-50">+${acc.price}</span>
               </button>
             ))}
           </div>
@@ -376,20 +385,20 @@ function CustomRequestSection() {
 
         {/* Special Requests */}
         <div>
-          <label className="block text-sm font-medium text-[var(--text-secondary)] mb-2">Special Requests</label>
+          <label className="block text-xs font-medium text-[var(--text-secondary)] mb-2 uppercase tracking-[0.15em]">Special Requests</label>
           <textarea
             value={specialRequests}
             onChange={(e) => setSpecialRequests(e.target.value)}
             placeholder="Describe your dream scene in detail..."
             rows={4}
-            className="w-full px-4 py-3.5 rounded-xl bg-[var(--bg-card)] border border-[var(--border-subtle)] text-[var(--text-primary)] placeholder-[var(--text-muted)] outline-none focus:border-[var(--accent-primary)] transition-all duration-300 resize-none"
+            className="w-full px-4 py-3.5 rounded-xl bg-[var(--bg-card)] border border-[var(--border-subtle)] text-[var(--text-primary)] placeholder-[var(--text-muted)] outline-none focus:border-[var(--accent-primary)] focus:shadow-[0_0_0_3px_var(--accent-soft)] transition-all duration-300 resize-none"
           />
         </div>
 
         {/* Price */}
         <div className="rounded-2xl border border-[var(--border-default)] bg-[var(--bg-card)] p-6 text-center gold-glow">
-          <div className="text-sm text-[var(--text-muted)] mb-1 tracking-wider uppercase">Estimated Price</div>
-          <div className="text-5xl font-bold text-[var(--accent-primary)]">${price}</div>
+          <div className="text-xs text-[var(--text-muted)] mb-1 tracking-[0.2em] uppercase">Estimated Price</div>
+          <div className="text-5xl font-[var(--font-cormorant)] font-semibold text-[var(--accent-primary)]">${price}</div>
           <div className="text-xs text-[var(--text-muted)] mt-2">
             {minutes} min · {videoTypes.find((v) => v.id === videoType)?.label}
             {accs.length > 0 && ` · ${accs.length} extras`}
@@ -399,7 +408,7 @@ function CustomRequestSection() {
         {/* Submit */}
         <button
           onClick={submit}
-          className="w-full py-4 rounded-xl bg-[var(--accent-primary)] text-[var(--bg-primary)] font-semibold text-lg uppercase tracking-wider hover:bg-[var(--accent-secondary)] transition-all duration-300 hover:shadow-[var(--shadow-glow-strong)]"
+          className="w-full py-4 rounded-full bg-[var(--accent-primary)] text-[var(--bg-primary)] font-semibold text-sm uppercase tracking-[0.15em] hover:bg-[var(--accent-secondary)] transition-all duration-300 hover:shadow-[0_0_40px_rgba(212,168,83,0.25)]"
         >
           Submit Request
         </button>
@@ -415,13 +424,13 @@ function InputField({ label, value, onChange, placeholder, type = "text" }: {
 }) {
   return (
     <div>
-      <label className="block text-sm font-medium text-[var(--text-secondary)] mb-2">{label}</label>
+      <label className="block text-xs font-medium text-[var(--text-secondary)] mb-2 uppercase tracking-[0.15em]">{label}</label>
       <input
         type={type}
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
-        className="w-full px-4 py-3.5 rounded-xl bg-[var(--bg-card)] border border-[var(--border-subtle)] text-[var(--text-primary)] placeholder-[var(--text-muted)] outline-none focus:border-[var(--accent-primary)] transition-all duration-300"
+        className="w-full px-4 py-3.5 rounded-xl bg-[var(--bg-card)] border border-[var(--border-subtle)] text-[var(--text-primary)] placeholder-[var(--text-muted)] outline-none focus:border-[var(--accent-primary)] focus:shadow-[0_0_0_3px_var(--accent-soft)] transition-all duration-300"
       />
     </div>
   );
