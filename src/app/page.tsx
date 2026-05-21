@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 
 // ===== DATA =====
 
@@ -44,6 +44,61 @@ const gradients = [
   "from-[#1a2028] to-[#181a20]",
 ];
 
+// ===== ANIMATED PRICE COMPONENT =====
+
+function AnimatedPrice({ value }: { value: number }) {
+  const [display, setDisplay] = useState(value);
+  const prevRef = useRef(value);
+
+  useEffect(() => {
+    const prev = prevRef.current;
+    if (prev === value) return;
+    prevRef.current = value;
+    const diff = value - prev;
+    const steps = 8;
+    const stepVal = diff / steps;
+    let current = 0;
+    const interval = setInterval(() => {
+      current++;
+      if (current >= steps) {
+        setDisplay(value);
+        clearInterval(interval);
+      } else {
+        setDisplay(Math.round(prev + stepVal * current));
+      }
+    }, 30);
+    return () => clearInterval(interval);
+  }, [value]);
+
+  return <span>${display}</span>;
+}
+
+// ===== VIDEO MODAL =====
+
+function VideoModal({ video, onClose }: { video: typeof ppvVideos[0]; onClose: () => void }) {
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
+    document.addEventListener("keydown", handler);
+    return () => document.removeEventListener("keydown", handler);
+  }, [onClose]);
+
+  return (
+    <div className="modal-overlay" onClick={onClose} role="dialog" aria-modal="true" aria-label={`Unlock ${video.title}`}>
+      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+        <button className="modal-close" onClick={onClose} aria-label="Close">✕</button>
+        <div className="modal-icon">{video.emoji}</div>
+        <h3 className="modal-title font-cormorant">{video.title}</h3>
+        <p className="modal-desc">{video.description}</p>
+        <div className="modal-price">${video.price}</div>
+        <button className="modal-unlock-btn" onClick={onClose}>
+          Unlock for ${video.price}
+        </button>
+        <p className="modal-note">Payment integration coming soon</p>
+      </div>
+    </div>
+  );
+}
+
 // ===== MAIN PAGE =====
 
 export default function Home() {
@@ -58,16 +113,20 @@ export default function Home() {
     <div className="min-h-screen flex flex-col pb-[80px] md:pb-0">
       {/* PROFILE HEADER */}
       <div className="profile-header">
-        <div className="avatar">✨</div>
+        <div className="avatar" aria-hidden="true">✨</div>
         <div className="profile-name">Luna</div>
         <div className="profile-bio">Exclusive content & custom requests. Made just for you.</div>
       </div>
 
       {/* SECTION TABS (horizontal scroll) */}
-      <div className="section-tabs">
+      <div className="section-tabs" role="tablist" aria-label="Content sections">
         {tabs.map((tab, i) => (
           <button
             key={i}
+            role="tab"
+            aria-selected={activeTab === i}
+            aria-controls={`panel-${i}`}
+            id={`tab-${i}`}
             onClick={() => setActiveTab(i)}
             className={`section-tab ${activeTab === i ? "active" : ""}`}
           >
@@ -78,13 +137,23 @@ export default function Home() {
 
       {/* CONTENT PANELS */}
       <main className="flex-1">
-        {activeTab === 0 && <QuestionnairePanel />}
-        {activeTab === 1 && <VideosPanel />}
-        {activeTab === 2 && <CustomRequestPanel />}
+        <div id="panel-0" role="tabpanel" aria-labelledby="tab-0" hidden={activeTab !== 0}>
+          <QuestionnairePanel />
+        </div>
+        <div id="panel-1" role="tabpanel" aria-labelledby="tab-1" hidden={activeTab !== 1}>
+          <VideosPanel />
+        </div>
+        <div id="panel-2" role="tabpanel" aria-labelledby="tab-2" hidden={activeTab !== 2}>
+          <CustomRequestPanel />
+        </div>
       </main>
 
       {/* FOOTER */}
-      <footer className="footer-text">Exclusive Content for Subscribers</footer>
+      <footer className="site-footer">
+        <div className="footer-ornament" aria-hidden="true">✦</div>
+        <p className="footer-text">Exclusive Content for Subscribers</p>
+        <p className="footer-copy">© {new Date().getFullYear()} Luna. All rights reserved.</p>
+      </footer>
     </div>
   );
 }
@@ -93,21 +162,38 @@ export default function Home() {
 
 function QuestionnairePanel() {
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({
     name: "", email: "", favorite_content: "", fantasies: "", frequency: "", additional_notes: "",
   });
   const [freqChips, setFreqChips] = useState<string[]>([]);
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
-  const set = (field: string, value: string) => setForm((p) => ({ ...p, [field]: value }));
+  const set = (field: string, value: string) => {
+    setForm((p) => ({ ...p, [field]: value }));
+    if (errors[field]) setErrors((e) => { const n = { ...e }; delete n[field]; return n; });
+  };
 
   const toggleFreq = (opt: string) => {
-    setFreqChips((prev) =>
-      prev.includes(opt) ? prev.filter((f) => f !== opt) : [...prev, opt]
-    );
-    set("frequency", freqChips.includes(opt) ? "" : opt);
+    setFreqChips((prev) => {
+      const next = prev.includes(opt) ? prev.filter((f) => f !== opt) : [...prev, opt];
+      set("frequency", next.join(", "));
+      return next;
+    });
+  };
+
+  const validate = () => {
+    const errs: Record<string, string> = {};
+    if (!form.name.trim()) errs.name = "Please enter your name";
+    if (!form.email.trim()) errs.email = "Please enter your email";
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) errs.email = "Please enter a valid email";
+    setErrors(errs);
+    return Object.keys(errs).length === 0;
   };
 
   const submit = async () => {
+    if (!validate()) return;
+    setLoading(true);
     try {
       const r = await fetch("/api/questionnaire", {
         method: "POST",
@@ -115,13 +201,17 @@ function QuestionnairePanel() {
         body: JSON.stringify({ ...form, frequency: freqChips.join(", ") }),
       });
       if (r.ok) setSubmitted(true);
-    } catch (e) { console.error(e); }
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setLoading(false);
+    }
   };
 
   if (submitted) {
     return (
       <div className="success-state">
-        <div className="success-icon">💋</div>
+        <div className="success-icon" aria-hidden="true">💋</div>
         <h2 className="font-cormorant">Thank You, Baby</h2>
         <p>I can&apos;t wait to read your answers. I&apos;ll create content just for you.</p>
       </div>
@@ -138,28 +228,37 @@ function QuestionnairePanel() {
 
       <div className="form-stack">
         <div>
-          <label className="form-label">Your Name</label>
+          <label className="form-label" htmlFor="q-name">Your Name <span className="required" aria-label="required">*</span></label>
           <input
+            id="q-name"
             type="text"
-            className="form-input"
+            className={`form-input ${errors.name ? "input-error" : ""}`}
             placeholder="What should I call you?"
             value={form.name}
             onChange={(e) => set("name", e.target.value)}
+            aria-invalid={!!errors.name}
+            aria-describedby={errors.name ? "q-name-error" : undefined}
           />
+          {errors.name && <p className="field-error" id="q-name-error" role="alert">{errors.name}</p>}
         </div>
         <div>
-          <label className="form-label">Email</label>
+          <label className="form-label" htmlFor="q-email">Email <span className="required" aria-label="required">*</span></label>
           <input
+            id="q-email"
             type="email"
-            className="form-input"
+            className={`form-input ${errors.email ? "input-error" : ""}`}
             placeholder="your@email.com"
             value={form.email}
             onChange={(e) => set("email", e.target.value)}
+            aria-invalid={!!errors.email}
+            aria-describedby={errors.email ? "q-email-error" : undefined}
           />
+          {errors.email && <p className="field-error" id="q-email-error" role="alert">{errors.email}</p>}
         </div>
         <div>
-          <label className="form-label">Favorite Content Type</label>
+          <label className="form-label" htmlFor="q-content">Favorite Content Type</label>
           <select
+            id="q-content"
             className="form-select"
             value={form.favorite_content}
             onChange={(e) => set("favorite_content", e.target.value)}
@@ -175,8 +274,9 @@ function QuestionnairePanel() {
           </select>
         </div>
         <div>
-          <label className="form-label">Fantasies You&apos;d Like Me to Fulfill</label>
+          <label className="form-label" htmlFor="q-fantasies">Fantasies You&apos;d Like Me to Fulfill</label>
           <textarea
+            id="q-fantasies"
             className="form-input form-textarea"
             placeholder="Tell me everything... I want to know what gets you excited"
             rows={3}
@@ -186,13 +286,14 @@ function QuestionnairePanel() {
         </div>
         <div>
           <label className="form-label" style={{ marginBottom: "0.5rem" }}>How Often Do You Want New Content?</label>
-          <div className="chips">
+          <div className="chips" role="group" aria-label="Content frequency">
             {["Daily", "Few times a week", "Weekly", "Whenever inspired"].map((opt) => (
               <button
                 key={opt}
                 type="button"
                 className={`chip ${freqChips.includes(opt) ? "on" : ""}`}
                 onClick={() => toggleFreq(opt)}
+                aria-pressed={freqChips.includes(opt)}
               >
                 {opt}
               </button>
@@ -200,8 +301,9 @@ function QuestionnairePanel() {
           </div>
         </div>
         <div>
-          <label className="form-label">Anything Else?</label>
+          <label className="form-label" htmlFor="q-notes">Anything Else?</label>
           <textarea
+            id="q-notes"
             className="form-input form-textarea"
             placeholder="Special requests, preferences, things you love..."
             rows={2}
@@ -209,7 +311,10 @@ function QuestionnairePanel() {
             onChange={(e) => set("additional_notes", e.target.value)}
           />
         </div>
-        <button className="submit-btn" onClick={submit}>Submit</button>
+        <button className="submit-btn" onClick={submit} disabled={loading} aria-busy={loading}>
+          {loading ? <span className="btn-loading" aria-hidden="true">⏳</span> : null}
+          {loading ? "Submitting..." : "Submit"}
+        </button>
       </div>
     </div>
   );
@@ -218,6 +323,8 @@ function QuestionnairePanel() {
 // ===== PANEL: VIDEOS (Linktree-style) =====
 
 function VideosPanel() {
+  const [selectedVideo, setSelectedVideo] = useState<typeof ppvVideos[0] | null>(null);
+
   return (
     <div className="panel active">
       <div className="panel-header">
@@ -227,8 +334,13 @@ function VideosPanel() {
       </div>
 
       {ppvVideos.map((video, i) => (
-        <a key={video.id} className="link-btn" href="#">
-          <div className={`link-btn-icon bg-gradient-to-br ${gradients[i]}`}>
+        <button
+          key={video.id}
+          className="link-btn"
+          onClick={() => setSelectedVideo(video)}
+          aria-label={`Unlock ${video.title} for $${video.price}`}
+        >
+          <div className={`link-btn-icon bg-gradient-to-br ${gradients[i]}`} aria-hidden="true">
             {video.emoji}
           </div>
           <div className="link-btn-content">
@@ -236,9 +348,13 @@ function VideosPanel() {
             <div className="link-btn-desc">{video.description}</div>
           </div>
           <div className="link-btn-price">${video.price}</div>
-          <div className="link-btn-arrow">→</div>
-        </a>
+          <div className="link-btn-arrow" aria-hidden="true">→</div>
+        </button>
       ))}
+
+      {selectedVideo && (
+        <VideoModal video={selectedVideo} onClose={() => setSelectedVideo(null)} />
+      )}
     </div>
   );
 }
@@ -247,12 +363,14 @@ function VideosPanel() {
 
 function CustomRequestPanel() {
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [minutes, setMinutes] = useState(15);
   const [videoType, setVideoType] = useState("solo");
   const [accs, setAccs] = useState<string[]>([]);
   const [specialRequests, setSpecialRequests] = useState("");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
   const toggleAcc = (id: string) =>
     setAccs((p) => (p.includes(id) ? p.filter((a) => a !== id) : [...p, id]));
@@ -266,7 +384,18 @@ function CustomRequestPanel() {
     return Math.round(base * (minutes / 15) + accTotal);
   })();
 
+  const validate = () => {
+    const errs: Record<string, string> = {};
+    if (!name.trim()) errs.name = "Please enter your name";
+    if (!email.trim()) errs.email = "Please enter your email";
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) errs.email = "Please enter a valid email";
+    setErrors(errs);
+    return Object.keys(errs).length === 0;
+  };
+
   const submit = async () => {
+    if (!validate()) return;
+    setLoading(true);
     try {
       const r = await fetch("/api/custom-request", {
         method: "POST",
@@ -277,13 +406,17 @@ function CustomRequestPanel() {
         }),
       });
       if (r.ok) setSubmitted(true);
-    } catch (e) { console.error(e); }
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setLoading(false);
+    }
   };
 
   if (submitted) {
     return (
       <div className="success-state">
-        <div className="success-icon">🎬</div>
+        <div className="success-icon" aria-hidden="true">🎬</div>
         <h2 className="font-cormorant">Request Received</h2>
         <p>I&apos;ll start working on your custom video right away.</p>
         <p style={{ color: "var(--accent-primary)", fontWeight: 500, marginTop: "0.5rem" }}>
@@ -305,39 +438,49 @@ function CustomRequestPanel() {
         {/* Name & Email */}
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.75rem" }}>
           <div>
-            <label className="form-label">Name</label>
+            <label className="form-label" htmlFor="cr-name">Name <span className="required" aria-label="required">*</span></label>
             <input
+              id="cr-name"
               type="text"
-              className="form-input"
+              className={`form-input ${errors.name ? "input-error" : ""}`}
               placeholder="Your name"
               value={name}
-              onChange={(e) => setName(e.target.value)}
+              onChange={(e) => { setName(e.target.value); if (errors.name) setErrors((er) => { const n = { ...er }; delete n.name; return n; }); }}
+              aria-invalid={!!errors.name}
+              aria-describedby={errors.name ? "cr-name-error" : undefined}
             />
+            {errors.name && <p className="field-error" id="cr-name-error" role="alert">{errors.name}</p>}
           </div>
           <div>
-            <label className="form-label">Email</label>
+            <label className="form-label" htmlFor="cr-email">Email <span className="required" aria-label="required">*</span></label>
             <input
+              id="cr-email"
               type="email"
-              className="form-input"
+              className={`form-input ${errors.email ? "input-error" : ""}`}
               placeholder="you@email.com"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) => { setEmail(e.target.value); if (errors.email) setErrors((er) => { const n = { ...er }; delete n.email; return n; }); }}
+              aria-invalid={!!errors.email}
+              aria-describedby={errors.email ? "cr-email-error" : undefined}
             />
+            {errors.email && <p className="field-error" id="cr-email-error" role="alert">{errors.email}</p>}
           </div>
         </div>
 
         {/* Video Type */}
         <div>
           <label className="form-label" style={{ marginBottom: "0.5rem" }}>Video Type</label>
-          <div className="btn-grid">
+          <div className="btn-grid" role="radiogroup" aria-label="Video type">
             {videoTypes.map((vt) => (
               <button
                 key={vt.id}
                 type="button"
+                role="radio"
+                aria-checked={videoType === vt.id}
                 className={`type-btn ${videoType === vt.id ? "selected" : ""}`}
                 onClick={() => setVideoType(vt.id)}
               >
-                <span className="type-btn-emoji">{vt.emoji}</span>
+                <span className="type-btn-emoji" aria-hidden="true">{vt.emoji}</span>
                 <span className="type-btn-name">{vt.label}</span>
                 <span className="type-btn-from">from ${vt.basePrice}</span>
               </button>
@@ -348,10 +491,11 @@ function CustomRequestPanel() {
         {/* Duration */}
         <div className="range-wrap">
           <div className="range-header">
-            <label className="form-label" style={{ marginBottom: 0 }}>Duration</label>
-            <span className="range-value">{minutes} min</span>
+            <label className="form-label" htmlFor="cr-duration" style={{ marginBottom: 0 }}>Duration</label>
+            <span className="range-value"><AnimatedPrice value={minutes === 15 ? minutes : minutes} /> min</span>
           </div>
           <input
+            id="cr-duration"
             type="range"
             min={5}
             max={60}
@@ -359,6 +503,10 @@ function CustomRequestPanel() {
             value={minutes}
             onChange={(e) => setMinutes(Number(e.target.value))}
             className="range-input"
+            aria-valuemin={5}
+            aria-valuemax={60}
+            aria-valuenow={minutes}
+            aria-valuetext={`${minutes} minutes`}
           />
           <div className="range-labels">
             <span>5</span><span>15</span><span>30</span><span>45</span><span>60</span>
@@ -375,6 +523,7 @@ function CustomRequestPanel() {
                 type="button"
                 className={`extra-toggle ${accs.includes(acc.id) ? "on" : ""}`}
                 onClick={() => toggleAcc(acc.id)}
+                aria-pressed={accs.includes(acc.id)}
               >
                 {acc.label}
                 <span className="extra-plus">+${acc.price}</span>
@@ -385,8 +534,9 @@ function CustomRequestPanel() {
 
         {/* Special Requests */}
         <div>
-          <label className="form-label">Special Requests</label>
+          <label className="form-label" htmlFor="cr-requests">Special Requests</label>
           <textarea
+            id="cr-requests"
             className="form-input form-textarea"
             placeholder="Describe your dream scene in detail..."
             rows={3}
@@ -400,13 +550,15 @@ function CustomRequestPanel() {
       <div className="sticky-price" id="stickyPrice">
         <div className="sticky-info">
           <div className="sticky-label">Estimated</div>
-          <div className="sticky-amount font-cormorant">${price}</div>
+          <div className="sticky-amount font-cormorant"><AnimatedPrice value={price} /></div>
           <div className="sticky-detail">
             {minutes} min · {videoTypes.find((v) => v.id === videoType)?.label}
             {accs.length > 0 && ` · ${accs.length} extras`}
           </div>
         </div>
-        <button className="sticky-btn" onClick={submit}>Submit Request</button>
+        <button className="sticky-btn" onClick={submit} disabled={loading} aria-busy={loading}>
+          {loading ? "Submitting..." : "Submit Request"}
+        </button>
       </div>
     </div>
   );

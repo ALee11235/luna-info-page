@@ -715,8 +715,8 @@ h1, h2, h3, h4, h5, h6 {
   line-height: 1.7;
 }
 
-/* FOOTER */
-.footer-text {
+/* FOOTER — legacy, replaced by .site-footer below */
+.footer-text-legacy {
   text-align: center;
   padding: 2rem 1.5rem;
   font-size: 0.65rem;
@@ -748,4 +748,240 @@ h1, h2, h3, h4, h5, h6 {
     max-width: 640px;
     margin: 0 auto;
   }
+}
+
+/* ============================================================
+   NEW: FORM VALIDATION & ERROR STATES
+   ============================================================ */
+
+.required {
+  color: var(--accent-primary);
+  font-size: 0.7rem;
+}
+
+.input-error {
+  border-color: #c0392b !important;
+  box-shadow: 0 0 0 3px rgba(192, 57, 43, 0.15) !important;
+}
+
+.field-error {
+  font-size: 0.7rem;
+  color: #e74c3c;
+  margin-top: 0.35rem;
+  font-weight: 400;
+}
+
+/* ============================================================
+   NEW: LOADING STATE
+   ============================================================ */
+
+.submit-btn:disabled,
+.sticky-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.btn-loading {
+  display: inline-block;
+  animation: spin 1s linear infinite;
+  margin-right: 0.5rem;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* ============================================================
+   NEW: FOCUS-VISIBLE STYLES
+   ============================================================ */
+
+.form-input:focus-visible,
+.form-select:focus-visible {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 2px;
+}
+
+.section-tab:focus-visible,
+.chip:focus-visible,
+.type-btn:focus-visible,
+.extra-toggle:focus-visible,
+.link-btn:focus-visible {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 2px;
+}
+
+.submit-btn:focus-visible,
+.sticky-btn:focus-visible,
+.modal-close:focus-visible,
+.modal-unlock-btn:focus-visible {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 2px;
+}
+
+/* ============================================================
+   NEW: VIDEO MODAL
+   ============================================================ */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  padding: 1.5rem;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.modal-content {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-strong);
+  border-radius: 1.5rem;
+  padding: 2rem;
+  max-width: 360px;
+  width: 100%;
+  text-align: center;
+  position: relative;
+  animation: fadeInUp 0.3s var(--ease-out);
+}
+
+.modal-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid var(--border-strong);
+  background: var(--bg-card);
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s;
+}
+
+.modal-close:hover {
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
+}
+
+.modal-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.modal-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.modal-desc {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+}
+
+.modal-price {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--accent-primary);
+  margin-bottom: 1.5rem;
+}
+
+.modal-unlock-btn {
+  width: 100%;
+  padding: 1rem;
+  background: var(--accent-primary);
+  color: var(--bg-primary);
+  font-weight: 600;
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border: none;
+  border-radius: 100px;
+  cursor: pointer;
+  transition: all 0.3s;
+  min-height: 52px;
+  font-family: var(--font-dm-sans), 'DM Sans', sans-serif;
+}
+
+.modal-unlock-btn:hover {
+  background: var(--accent-secondary);
+  box-shadow: 0 0 30px rgba(212, 168, 83, 0.2);
+}
+
+.modal-note {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  margin-top: 1rem;
+}
+
+/* ============================================================
+   NEW: ENHANCED FOOTER
+   ============================================================ */
+
+.site-footer {
+  text-align: center;
+  padding: 2.5rem 1.5rem;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.footer-ornament {
+  font-size: 1.25rem;
+  color: var(--accent-muted);
+  margin-bottom: 0.75rem;
+  opacity: 0.5;
+}
+
+.footer-text {
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 0.5rem;
+}
+
+.footer-copy {
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  opacity: 0.6;
+}
+
+/* ============================================================
+   NEW: LINK-BTN CURSOR
+   ============================================================ */
+
+.link-btn {
+  cursor: pointer;
+}
+
+/* ============================================================
+   NEW: RANGE TRACK FILL (WebKit)
+   ============================================================ */
+
+.range-input::-webkit-slider-runnable-track {
+  height: 6px;
+  border-radius: 3px;
+  background: var(--bg-card);
+}
+
+.range-input::-moz-range-track {
+  height: 6px;
+  border-radius: 3px;
+  background: var(--bg-card);
+}
+
+.range-input::-moz-range-progress {
+  height: 6px;
+  border-radius: 3px;
+  background: var(--accent-primary);
 }
