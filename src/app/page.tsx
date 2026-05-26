@@ -110,7 +110,7 @@ export default function Home() {
   ];
 
   return (
-    <div className="min-h-screen flex flex-col pb-[80px] md:pb-0">
+    <div className="min-h-screen flex flex-col pb-[72px] md:pb-0">
       {/* PROFILE HEADER */}
       <div className="profile-header">
         <div className="avatar" aria-hidden="true">✨</div>
@@ -491,8 +491,8 @@ function CustomRequestPanel() {
         {/* Duration */}
         <div className="range-wrap">
           <div className="range-header">
-            <label className="form-label" htmlFor="cr-duration" style={{ marginBottom: 0 }}>Duration</label>
-            <span className="range-value"><AnimatedPrice value={minutes === 15 ? minutes : minutes} /> min</span>
+            <label className="form-label range-label" htmlFor="cr-duration" style={{ marginBottom: 0 }}>Duration</label>
+            <span className="range-value">{minutes} min</span>
           </div>
           <input
             id="cr-duration"
@@ -508,9 +508,6 @@ function CustomRequestPanel() {
             aria-valuenow={minutes}
             aria-valuetext={`${minutes} minutes`}
           />
-          <div className="range-labels">
-            <span>5</span><span>15</span><span>30</span><span>45</span><span>60</span>
-          </div>
         </div>
 
         {/* Extras */}
@@ -549,15 +546,15 @@ function CustomRequestPanel() {
       {/* STICKY PRICE BAR */}
       <div className="sticky-price" id="stickyPrice">
         <div className="sticky-info">
-          <div className="sticky-label">Estimated</div>
-          <div className="sticky-amount font-cormorant"><AnimatedPrice value={price} /></div>
-          <div className="sticky-detail">
-            {minutes} min · {videoTypes.find((v) => v.id === videoType)?.label}
-            {accs.length > 0 && ` · ${accs.length} extras`}
-          </div>
+          <span className="sticky-label">Est.</span>
+          <span className="sticky-amount font-cormorant"><AnimatedPrice value={price} /></span>
+          <span className="sticky-detail">
+            {minutes}min · {videoTypes.find((v) => v.id === videoType)?.label}
+            {accs.length > 0 && ` · ${accs.length} extra${accs.length > 1 ? 's' : ''}`}
+          </span>
         </div>
         <button className="sticky-btn" onClick={submit} disabled={loading} aria-busy={loading}>
-          {loading ? "Submitting..." : "Submit Request"}
+          {loading ? "..." : "Submit"}
         </button>
       </div>
     </div>
