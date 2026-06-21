@@ -99,14 +99,65 @@ function VideoModal({ video, onClose }: { video: typeof ppvVideos[0]; onClose: (
   );
 }
 
+// ===== BOOBIE PIC UPLOAD PLACEHOLDER =====
+
+function BoobieUpload({ index, label }: { index: number; label: string }) {
+  const [preview, setPreview] = useState<string | null>(null);
+  const fileRef = useRef<HTMLInputElement>(null);
+
+  const handleFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (ev) => setPreview(ev.target?.result as string);
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const colors = [
+    "from-rose-900/40 to-pink-900/30",
+    "from-pink-900/40 to-fuchsia-900/30",
+    "from-fuchsia-900/40 to-rose-900/30",
+  ];
+
+  return (
+    <div>
+      <label className="form-label">{label}</label>
+      <input
+        ref={fileRef}
+        type="file"
+        accept="image/*"
+        className="hidden"
+        onChange={handleFile}
+        id={`boob-upload-${index}`}
+      />
+      <button
+        type="button"
+        className={`boobie-upload-box bg-gradient-to-br ${colors[index % 3]}`}
+        onClick={() => fileRef.current?.click()}
+        aria-label={`Upload ${label}`}
+      >
+        {preview ? (
+          <img src={preview} alt={label} className="boobie-preview" />
+        ) : (
+          <div className="boobie-placeholder">
+            <span className="boobie-icon">📸</span>
+            <span className="boobie-text">Tap to add pic</span>
+          </div>
+        )}
+      </button>
+    </div>
+  );
+}
+
 // ===== MAIN PAGE =====
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState(0);
   const tabs = [
-    { label: "✦ Get to Know You", short: "Get to Know You" },
+    { label: "💕 BF Application", short: "BF App" },
     { label: "🎬 Videos", short: "Videos" },
-    { label: "💫 Custom Request", short: "Custom Request" },
+    { label: "💫 Custom Request", short: "Custom" },
   ];
 
   return (
@@ -138,7 +189,7 @@ export default function Home() {
       {/* CONTENT PANELS */}
       <main className="flex-1">
         <div id="panel-0" role="tabpanel" aria-labelledby="tab-0" hidden={activeTab !== 0}>
-          <QuestionnairePanel />
+          <BfApplicationPanel />
         </div>
         <div id="panel-1" role="tabpanel" aria-labelledby="tab-1" hidden={activeTab !== 1}>
           <VideosPanel />
@@ -158,13 +209,17 @@ export default function Home() {
   );
 }
 
-// ===== PANEL: QUESTIONNAIRE =====
+// ===== PANEL: BF APPLICATION (5 Questions) =====
 
-function QuestionnairePanel() {
+function BfApplicationPanel() {
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({
-    name: "", email: "", favorite_content: "", fantasies: "", frequency: "", additional_notes: "",
+    name: "",
+    email: "",
+    favorite_content: "",
+    fantasies: "",
+    frequency: "",
   });
   const [freqChips, setFreqChips] = useState<string[]>([]);
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -222,41 +277,55 @@ function QuestionnairePanel() {
     <div className="panel active">
       <div className="panel-header">
         <div className="label">For My Subscribers</div>
-        <h2 className="font-cormorant">Get to Know You</h2>
-        <p>Answer these questions so I can create the perfect content just for you</p>
+        <h2 className="font-cormorant">BF Application ❤️</h2>
+        <p>Answer these 5 questions so I can create the perfect content just for you</p>
       </div>
 
       <div className="form-stack">
-        <div>
-          <label className="form-label" htmlFor="q-name">Your Name <span className="required" aria-label="required">*</span></label>
-          <input
-            id="q-name"
-            type="text"
-            className={`form-input ${errors.name ? "input-error" : ""}`}
-            placeholder="What should I call you?"
-            value={form.name}
-            onChange={(e) => set("name", e.target.value)}
-            aria-invalid={!!errors.name}
-            aria-describedby={errors.name ? "q-name-error" : undefined}
-          />
-          {errors.name && <p className="field-error" id="q-name-error" role="alert">{errors.name}</p>}
+        {/* Q1: Name & Email */}
+        <div className="bf-q-card">
+          <div className="bf-q-header">
+            <span className="bf-q-num">1</span>
+            <span className="bf-q-title">Who are you?</span>
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.75rem" }}>
+            <div>
+              <label className="form-label" htmlFor="q-name">Name <span className="required" aria-label="required">*</span></label>
+              <input
+                id="q-name"
+                type="text"
+                className={`form-input ${errors.name ? "input-error" : ""}`}
+                placeholder="What should I call you?"
+                value={form.name}
+                onChange={(e) => set("name", e.target.value)}
+                aria-invalid={!!errors.name}
+                aria-describedby={errors.name ? "q-name-error" : undefined}
+              />
+              {errors.name && <p className="field-error" id="q-name-error" role="alert">{errors.name}</p>}
+            </div>
+            <div>
+              <label className="form-label" htmlFor="q-email">Email <span className="required" aria-label="required">*</span></label>
+              <input
+                id="q-email"
+                type="email"
+                className={`form-input ${errors.email ? "input-error" : ""}`}
+                placeholder="your@email.com"
+                value={form.email}
+                onChange={(e) => set("email", e.target.value)}
+                aria-invalid={!!errors.email}
+                aria-describedby={errors.email ? "q-email-error" : undefined}
+              />
+              {errors.email && <p className="field-error" id="q-email-error" role="alert">{errors.email}</p>}
+            </div>
+          </div>
         </div>
-        <div>
-          <label className="form-label" htmlFor="q-email">Email <span className="required" aria-label="required">*</span></label>
-          <input
-            id="q-email"
-            type="email"
-            className={`form-input ${errors.email ? "input-error" : ""}`}
-            placeholder="your@email.com"
-            value={form.email}
-            onChange={(e) => set("email", e.target.value)}
-            aria-invalid={!!errors.email}
-            aria-describedby={errors.email ? "q-email-error" : undefined}
-          />
-          {errors.email && <p className="field-error" id="q-email-error" role="alert">{errors.email}</p>}
-        </div>
-        <div>
-          <label className="form-label" htmlFor="q-content">Favorite Content Type</label>
+
+        {/* Q2: Favorite Content */}
+        <div className="bf-q-card">
+          <div className="bf-q-header">
+            <span className="bf-q-num">2</span>
+            <span className="bf-q-title">What&apos;s your favorite content?</span>
+          </div>
           <select
             id="q-content"
             className="form-select"
@@ -273,8 +342,13 @@ function QuestionnairePanel() {
             <option value="custom">Custom Requests</option>
           </select>
         </div>
-        <div>
-          <label className="form-label" htmlFor="q-fantasies">Fantasies You&apos;d Like Me to Fulfill</label>
+
+        {/* Q3: Fantasies */}
+        <div className="bf-q-card">
+          <div className="bf-q-header">
+            <span className="bf-q-num">3</span>
+            <span className="bf-q-title">What fantasies should I fulfill?</span>
+          </div>
           <textarea
             id="q-fantasies"
             className="form-input form-textarea"
@@ -284,8 +358,13 @@ function QuestionnairePanel() {
             onChange={(e) => set("fantasies", e.target.value)}
           />
         </div>
-        <div>
-          <label className="form-label" style={{ marginBottom: "0.5rem" }}>How Often Do You Want New Content?</label>
+
+        {/* Q4: Frequency */}
+        <div className="bf-q-card">
+          <div className="bf-q-header">
+            <span className="bf-q-num">4</span>
+            <span className="bf-q-title">How often do you want new content?</span>
+          </div>
           <div className="chips" role="group" aria-label="Content frequency">
             {["Daily", "Few times a week", "Weekly", "Whenever inspired"].map((opt) => (
               <button
@@ -300,20 +379,24 @@ function QuestionnairePanel() {
             ))}
           </div>
         </div>
-        <div>
-          <label className="form-label" htmlFor="q-notes">Anything Else?</label>
-          <textarea
-            id="q-notes"
-            className="form-input form-textarea"
-            placeholder="Special requests, preferences, things you love..."
-            rows={2}
-            value={form.additional_notes}
-            onChange={(e) => set("additional_notes", e.target.value)}
-          />
+
+        {/* Q5: Boobie Pics */}
+        <div className="bf-q-card">
+          <div className="bf-q-header">
+            <span className="bf-q-num">5</span>
+            <span className="bf-q-title">Show me what you like 💕</span>
+          </div>
+          <p className="bf-q-subtitle">Upload reference pics so I know exactly what you love</p>
+          <div className="boobie-grid">
+            <BoobieUpload index={0} label="Pic 1 — Favorite" />
+            <BoobieUpload index={1} label="Pic 2 — Inspo" />
+            <BoobieUpload index={2} label="Pic 3 — Dream" />
+          </div>
         </div>
+
         <button className="submit-btn" onClick={submit} disabled={loading} aria-busy={loading}>
           {loading ? <span className="btn-loading" aria-hidden="true">⏳</span> : null}
-          {loading ? "Submitting..." : "Submit"}
+          {loading ? "Submitting..." : "Submit Application ❤️"}
         </button>
       </div>
     </div>
