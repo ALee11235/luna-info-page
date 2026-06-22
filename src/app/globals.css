@@ -628,16 +628,16 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--accent-primary);
 }
 
-/* RANGE SLIDER — compact */
+/* RANGE SLIDER */
 .range-wrap {
-  padding: 0.25rem 0;
+  padding: 0.5rem 0;
 }
 
 .range-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 0.35rem;
+  margin-bottom: 0.75rem;
 }
 
 .range-label {
@@ -652,37 +652,46 @@ h1, h2, h3, h4, h5, h6 {
 .range-value {
   color: var(--accent-primary);
   font-weight: 600;
-  font-size: 0.85rem;
+  font-size: 1rem;
 }
 
 .range-input {
   width: 100%;
-  height: 4px;
+  height: 6px;
   -webkit-appearance: none;
   appearance: none;
   background: var(--bg-card);
-  border-radius: 2px;
+  border-radius: 3px;
   outline: none;
+  display: block;
 }
 
 .range-input::-webkit-slider-thumb {
   -webkit-appearance: none;
-  width: 20px;
-  height: 20px;
+  width: 24px;
+  height: 24px;
   background: var(--accent-primary);
   border-radius: 50%;
   cursor: pointer;
-  box-shadow: 0 2px 6px rgba(212, 168, 83, 0.3);
+  box-shadow: 0 2px 8px rgba(212, 168, 83, 0.3);
 }
 
 .range-input::-moz-range-thumb {
-  width: 20px;
-  height: 20px;
+  width: 24px;
+  height: 24px;
   background: var(--accent-primary);
   border-radius: 50%;
   cursor: pointer;
   border: none;
-  box-shadow: 0 2px 6px rgba(212, 168, 83, 0.3);
+  box-shadow: 0 2px 8px rgba(212, 168, 83, 0.3);
+}
+
+.range-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  margin-top: 0.5rem;
 }
 
 /* EXTRA TOGGLES — compact */
@@ -737,7 +746,7 @@ h1, h2, h3, h4, h5, h6 {
   box-shadow: 0 0 30px rgba(212, 168, 83, 0.2);
 }
 
-/* STICKY PRICE BAR (mobile only) — compact */
+/* STICKY PRICE BAR (mobile only) */
 .sticky-price {
   position: fixed;
   bottom: 0;
@@ -745,7 +754,7 @@ h1, h2, h3, h4, h5, h6 {
   right: 0;
   background: var(--bg-secondary);
   border-top: 1px solid var(--border-strong);
-  padding: 0.5rem 1.25rem;
+  padding: 0.75rem 1.5rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -755,8 +764,8 @@ h1, h2, h3, h4, h5, h6 {
 
 .sticky-info {
   display: flex;
-  align-items: baseline;
-  gap: 0.5rem;
+  flex-direction: column;
+  gap: 0.1rem;
 }
 
 .sticky-label {
@@ -770,6 +779,7 @@ h1, h2, h3, h4, h5, h6 {
   font-size: 1.25rem;
   color: var(--accent-primary);
   font-weight: 600;
+  line-height: 1.2;
 }
 
 .sticky-detail {
@@ -778,17 +788,18 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .sticky-btn {
-  padding: 0.6rem 1.25rem;
+  padding: 0.75rem 1.5rem;
   background: var(--accent-primary);
   color: var(--bg-primary);
   font-weight: 600;
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   letter-spacing: 0.05em;
   text-transform: uppercase;
   border: none;
   border-radius: 100px;
   cursor: pointer;
-  min-height: 40px;
+  min-height: 44px;
+  flex-shrink: 0;
   font-family: var(--font-dm-sans), 'DM Sans', sans-serif;
 }
 

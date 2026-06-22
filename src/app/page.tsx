@@ -16,21 +16,14 @@ const ppvVideos = [
 ];
 
 const videoTypes = [
-  { id: "solo", label: "Solo", basePrice: 80, emoji: "💋" },
-  { id: "pov", label: "POV", basePrice: 100, emoji: "🎥" },
-  { id: "couple", label: "Couple", basePrice: 150, emoji: "👫" },
-  { id: "lesbian", label: "Lesbian", basePrice: 140, emoji: "👩‍❤️‍👩" },
+  { id: "solo", label: "Solo", basePrice: 100, emoji: "💋" },
 ];
 
 const accessoryOptions = [
   { id: "dildo", label: "Dildo", price: 20 },
-  { id: "vibrator", label: "Vibrator", price: 15 },
-  { id: "butt-plug", label: "Butt Plug", price: 15 },
-  { id: "blindfold", label: "Blindfold", price: 10 },
-  { id: "rope", label: "Bondage", price: 15 },
-  { id: "outfit", label: "Special Outfit", price: 25 },
-  { id: "heels", label: "Heels", price: 10 },
   { id: "lingerie", label: "Lingerie Set", price: 20 },
+  { id: "heels", label: "Heels", price: 10 },
+  { id: "outfit", label: "Custom Outfit", price: 25 },
 ];
 
 const gradients = [
@@ -278,7 +271,7 @@ function BfApplicationPanel() {
       <div className="panel-header">
         <div className="label">For My Subscribers</div>
         <h2 className="font-cormorant">BF Application ❤️</h2>
-        <p>Answer these 5 questions so I can create the perfect content just for you</p>
+        <p>5 questions so I can get to know you ❤️</p>
       </div>
 
       <div className="form-stack">
@@ -450,6 +443,7 @@ function CustomRequestPanel() {
   const [minutes, setMinutes] = useState(15);
   const [videoType, setVideoType] = useState("solo");
   const [accs, setAccs] = useState<string[]>([]);
+  const [rush, setRush] = useState(false);
   const [specialRequests, setSpecialRequests] = useState("");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -459,12 +453,14 @@ function CustomRequestPanel() {
     setAccs((p) => (p.includes(id) ? p.filter((a) => a !== id) : [...p, id]));
 
   const price = (() => {
-    const base = videoTypes.find((v) => v.id === videoType)?.basePrice || 80;
+    const base = videoTypes.find((v) => v.id === videoType)?.basePrice || 100;
     const accTotal = accs.reduce((s, id) => {
       const a = accessoryOptions.find((x) => x.id === id);
       return s + (a?.price || 0);
     }, 0);
-    return Math.round(base * (minutes / 15) + accTotal);
+    const durationPrice = base * (minutes / 10);
+    const subtotal = durationPrice + accTotal;
+    return Math.round(rush ? subtotal * 1.5 : subtotal);
   })();
 
   const validate = () => {
@@ -484,8 +480,8 @@ function CustomRequestPanel() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          name, email, minutes, video_type: videoType,
-          accessories: accs, special_requests: specialRequests, estimated_price: price,
+          name, email, minutes, video_type: videoType, accessories: accs,
+          special_requests: specialRequests, estimated_price: price, rush,
         }),
       });
       if (r.ok) setSubmitted(true);
@@ -503,7 +499,7 @@ function CustomRequestPanel() {
         <h2 className="font-cormorant">Request Received</h2>
         <p>I&apos;ll start working on your custom video right away.</p>
         <p style={{ color: "var(--accent-primary)", fontWeight: 500, marginTop: "0.5rem" }}>
-          Estimated price: ${price}
+          Estimated price: ${price}{rush ? " (includes 50% rush fee)" : ""}
         </p>
       </div>
     );
@@ -593,6 +589,19 @@ function CustomRequestPanel() {
           />
         </div>
 
+        {/* Rush Job */}
+        <div>
+          <button
+            type="button"
+            className={`extra-toggle ${rush ? "on" : ""}`}
+            onClick={() => setRush(!rush)}
+            aria-pressed={rush}
+          >
+            <span>⚡ Rush Job (faster delivery)</span>
+            <span className="extra-plus">+50%</span>
+          </button>
+        </div>
+
         {/* Extras */}
         <div>
           <label className="form-label" style={{ marginBottom: "0.5rem" }}>Extras</label>
@@ -633,6 +642,7 @@ function CustomRequestPanel() {
           <span className="sticky-amount font-cormorant"><AnimatedPrice value={price} /></span>
           <span className="sticky-detail">
             {minutes}min · {videoTypes.find((v) => v.id === videoType)?.label}
+            {rush && " · ⚡ Rush"}
             {accs.length > 0 && ` · ${accs.length} extra${accs.length > 1 ? 's' : ''}`}
           </span>
         </div>
