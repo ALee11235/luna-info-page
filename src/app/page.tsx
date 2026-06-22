@@ -371,7 +371,7 @@ function BfApplicationPanel() {
           </div>
         </div>
 
-        {/* Q5: Boobie Pics */}
+        {/* Q5: Open-ended */}
         <div className="bf-q-card">
           <div className="bf-q-header">
             <span className="bf-q-num">5</span>
