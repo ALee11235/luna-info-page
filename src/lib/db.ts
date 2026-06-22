@@ -18,7 +18,7 @@ db.exec(`
   CREATE TABLE IF NOT EXISTS questionnaire_submissions (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT,
-    email TEXT,
+    username TEXT,
     favorite_content TEXT,
     fantasies TEXT,
     frequency TEXT,
@@ -29,7 +29,7 @@ db.exec(`
   CREATE TABLE IF NOT EXISTS custom_requests (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT,
-    email TEXT,
+    username TEXT,
     minutes INTEGER,
     video_type TEXT,
     accessories TEXT,

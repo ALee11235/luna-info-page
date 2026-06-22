@@ -209,7 +209,7 @@ function BfApplicationPanel() {
   const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({
     name: "",
-    email: "",
+    username: "",
     favorite_content: "",
     fantasies: "",
     frequency: "",
@@ -233,8 +233,7 @@ function BfApplicationPanel() {
   const validate = () => {
     const errs: Record<string, string> = {};
     if (!form.name.trim()) errs.name = "Please enter your name";
-    if (!form.email.trim()) errs.email = "Please enter your email";
-    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) errs.email = "Please enter a valid email";
+    if (!form.username.trim()) errs.username = "Please enter your username";
     setErrors(errs);
     return Object.keys(errs).length === 0;
   };
@@ -297,18 +296,18 @@ function BfApplicationPanel() {
               {errors.name && <p className="field-error" id="q-name-error" role="alert">{errors.name}</p>}
             </div>
             <div>
-              <label className="form-label" htmlFor="q-email">Email <span className="required" aria-label="required">*</span></label>
+              <label className="form-label" htmlFor="q-username">Username <span className="required" aria-label="required">*</span></label>
               <input
-                id="q-email"
-                type="email"
-                className={`form-input ${errors.email ? "input-error" : ""}`}
-                placeholder="your@email.com"
-                value={form.email}
-                onChange={(e) => set("email", e.target.value)}
-                aria-invalid={!!errors.email}
-                aria-describedby={errors.email ? "q-email-error" : undefined}
+                id="q-username"
+                type="text"
+                className={`form-input ${errors.username ? "input-error" : ""}`}
+                placeholder="your username"
+                value={form.username}
+                onChange={(e) => set("username", e.target.value)}
+                aria-invalid={!!errors.username}
+                aria-describedby={errors.username ? "q-username-error" : undefined}
               />
-              {errors.email && <p className="field-error" id="q-email-error" role="alert">{errors.email}</p>}
+              {errors.username && <p className="field-error" id="q-username-error" role="alert">{errors.username}</p>}
             </div>
           </div>
         </div>
@@ -466,8 +465,7 @@ function CustomRequestPanel() {
   const validate = () => {
     const errs: Record<string, string> = {};
     if (!name.trim()) errs.name = "Please enter your name";
-    if (!email.trim()) errs.email = "Please enter your email";
-    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) errs.email = "Please enter a valid email";
+    if (!email.trim()) errs.username = "Please enter your username";
     setErrors(errs);
     return Object.keys(errs).length === 0;
   };
@@ -531,18 +529,18 @@ function CustomRequestPanel() {
             {errors.name && <p className="field-error" id="cr-name-error" role="alert">{errors.name}</p>}
           </div>
           <div>
-            <label className="form-label" htmlFor="cr-email">Email <span className="required" aria-label="required">*</span></label>
+            <label className="form-label" htmlFor="cr-username">Username <span className="required" aria-label="required">*</span></label>
             <input
-              id="cr-email"
-              type="email"
-              className={`form-input ${errors.email ? "input-error" : ""}`}
-              placeholder="you@email.com"
+              id="cr-username"
+              type="text"
+              className={`form-input ${errors.username ? "input-error" : ""}`}
+              placeholder="your username"
               value={email}
-              onChange={(e) => { setEmail(e.target.value); if (errors.email) setErrors((er) => { const n = { ...er }; delete n.email; return n; }); }}
-              aria-invalid={!!errors.email}
-              aria-describedby={errors.email ? "cr-email-error" : undefined}
+              onChange={(e) => { setEmail(e.target.value); if (errors.username) setErrors((er) => { const n = { ...er }; delete n.username; return n; }); }}
+              aria-invalid={!!errors.username}
+              aria-describedby={errors.username ? "cr-username-error" : undefined}
             />
-            {errors.email && <p className="field-error" id="cr-email-error" role="alert">{errors.email}</p>}
+            {errors.username && <p className="field-error" id="cr-username-error" role="alert">{errors.username}</p>}
           </div>
         </div>
 
