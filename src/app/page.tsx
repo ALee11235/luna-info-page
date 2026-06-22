@@ -268,7 +268,6 @@ function BfApplicationPanel() {
   return (
     <div className="panel active">
       <div className="panel-header">
-        <div className="label">For My Subscribers</div>
         <h2 className="font-cormorant">BF Application ❤️</h2>
         <p>5 questions so I can get to know you ❤️</p>
       </div>
