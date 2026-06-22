@@ -21,6 +21,7 @@ WORKDIR /app
 
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
+ENV ADMIN_PASSWORD=luna2026
 
 # Copy built application
 COPY --from=builder /app/.next/standalone ./
