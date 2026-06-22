@@ -154,7 +154,7 @@ export default function Home() {
   ];
 
   return (
-    <div className="min-h-screen flex flex-col pb-[72px] md:pb-0">
+    <div className="min-h-screen flex flex-col pb-[56px] md:pb-0">
       {/* PROFILE HEADER */}
       <div className="profile-header">
         <div className="avatar" aria-hidden="true">✨</div>

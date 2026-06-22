@@ -1,29 +1,29 @@
 # Luna Info Page
 
-A dark, luxurious info page for an OnlyFans model's subscribers. Built with Next.js, TypeScript, and Tailwind CSS.
+A dark, luxurious info page for Luna's subscribers. Built with Next.js, TypeScript, and Tailwind CSS.
 
 ## Live URL
 
-https://p01--info-page--wr64nvjslpdn.code.run
+https://p01--info-page--wr64jslpdn.code.run
 
 ## Features
 
-- **Get to Know You** — Questionnaire form for subscribers to tell the model their preferences
+- **BF Application** — 5-question form for subscribers to share preferences
 - **PPV Videos** — Grid of pay-per-view videos with prices and descriptions
-- **Custom Request** — Interactive calculator with video type, duration, and accessory toggles (~$200 average)
+- **Custom Request** — Interactive price calculator with duration slider, extras, and rush option
 
 ## Tech Stack
 
-- **Framework**: Next.js 16 (App Router)
+- **Framework**: Next.js 16 (App Router, standalone output)
 - **Language**: TypeScript
 - **Styling**: Tailwind CSS 4
 - **Database**: SQLite (better-sqlite3)
-- **Deployment**: Northflank (Docker)
+- **Deployment**: Northflank (Docker, auto-deploy on push to `main`)
 
 ## Project Structure
 
 ```
-info-page/
+luna-info-page/
 ├── src/
 │   ├── app/
 │   │   ├── api/
@@ -45,18 +45,18 @@ info-page/
 ## Design System
 
 Dark & luxurious aesthetic:
-- **Backgrounds**: Near-black with warm undertones (#0a0a0c → #22222e)
-- **Accent**: Rich gold (#d4a853) used sparingly for CTAs and highlights
-- **Typography**: Serif headings (Georgia), clean sans-serif body (Inter)
-- **Effects**: Subtle gold glows, smooth spring animations, generous whitespace
-- **Mobile-first**: Responsive grid layouts, touch-friendly controls
+- **Backgrounds**: Warm browns (#1a1412 → #2e2623)
+- **Accent**: Soft gold (#d4a853) for CTAs and highlights
+- **Typography**: Cormorant Garamond headings, DM Sans body
+- **Effects**: Subtle gold glows, spring animations, noise texture overlay
+- **Mobile-first**: Sticky price bar on mobile, responsive grids
 
 ## API Routes
 
 | Method | Path | Description |
 |--------|------|-------------|
-| POST | `/api/questionnaire` | Submit questionnaire (name, email, preferences, fantasies, frequency, notes) |
-| POST | `/api/custom-request` | Submit custom request (name, email, minutes, type, accessories, price) |
+| POST | `/api/questionnaire` | Submit questionnaire (name, email, preferences, fantasies, frequency) |
+| POST | `/api/custom-request` | Submit custom request (name, email, minutes, type, accessories, price, rush) |
 
 ## Database Schema
 
@@ -69,7 +69,6 @@ Dark & luxurious aesthetic:
 | favorite_content | TEXT | Preferred content type |
 | fantasies | TEXT | Free-text fantasies |
 | frequency | TEXT | Content frequency preference |
-| additional_notes | TEXT | Free-text notes |
 | created_at | DATETIME | Timestamp |
 
 ### custom_requests
@@ -79,20 +78,19 @@ Dark & luxurious aesthetic:
 | name | TEXT | Subscriber name |
 | email | TEXT | Subscriber email |
 | minutes | INTEGER | Video duration |
-| video_type | TEXT | solo/pov/couple/lesbian |
+| video_type | TEXT | Currently: solo |
 | accessories | TEXT | JSON array of selected accessories |
 | special_requests | TEXT | Free-text requests |
 | estimated_price | INTEGER | Calculated price in USD |
+| rush | INTEGER | 0 = normal, 1 = rush (+50% fee) |
 | created_at | DATETIME | Timestamp |
 
 ## Custom Request Pricing
 
-- **Solo**: $80 base (× minutes/15)
-- **POV**: $100 base (× minutes/15)
-- **Couple**: $150 base (× minutes/15)
-- **Lesbian**: $140 base (× minutes/15)
-- **Accessories**: +$10-25 each
-- **Target average**: ~$200 per video
+- **Base**: $100 for 10 minutes (solo only)
+- **Duration**: $100 × (minutes / 10)
+- **Rush job**: +50% on total (toggleable)
+- **Extras**: Dildo +$20, Lingerie Set +$20, Heels +$10, Custom Outfit +$25
 
 ## Deployment
 
