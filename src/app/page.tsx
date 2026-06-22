@@ -213,6 +213,7 @@ function BfApplicationPanel() {
     favorite_content: "",
     fantasies: "",
     frequency: "",
+    open_ended: "",
   });
   const [freqChips, setFreqChips] = useState<string[]>([]);
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -245,7 +246,7 @@ function BfApplicationPanel() {
       const r = await fetch("/api/questionnaire", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...form, frequency: freqChips.join(", ") }),
+        body: JSON.stringify({ ...form, frequency: freqChips.join(", "), additional_notes: form.open_ended }),
       });
       if (r.ok) setSubmitted(true);
     } catch (e) {
@@ -377,12 +378,14 @@ function BfApplicationPanel() {
             <span className="bf-q-num">5</span>
             <span className="bf-q-title">Show me what you like 💕</span>
           </div>
-          <p className="bf-q-subtitle">Upload reference pics so I know exactly what you love</p>
-          <div className="boobie-grid">
-            <BoobieUpload index={0} label="Pic 1 — Favorite" />
-            <BoobieUpload index={1} label="Pic 2 — Inspo" />
-            <BoobieUpload index={2} label="Pic 3 — Dream" />
-          </div>
+          <textarea
+            id="q-open"
+            className="form-input form-textarea"
+            placeholder="Tell me what you love, what you're into, what you'd love to see..."
+            rows={4}
+            value={form.open_ended}
+            onChange={(e) => set("open_ended", e.target.value)}
+          />
         </div>
 
         <button className="submit-btn" onClick={submit} disabled={loading} aria-busy={loading}>
