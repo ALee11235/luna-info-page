@@ -5,18 +5,9 @@ import { useState, useEffect, useRef } from "react";
 // ===== DATA =====
 
 const ppvVideos = [
-  { id: 1, title: "Shower Show", description: "Steamy solo shower · 12 min", price: 15, emoji: "🚿" },
-  { id: 2, title: "Late Night Vibes", description: "Favorite lingerie · 18 min", price: 20, emoji: "🌙" },
-  { id: 3, title: "Toy Time", description: "Multiple orgasms · 22 min", price: 25, emoji: "🎀" },
-  { id: 4, title: "Strip Tease", description: "Slow seductive tease · 8 min", price: 12, emoji: "💃" },
-  { id: 5, title: "BDSM Play", description: "Light bondage · 25 min", price: 30, emoji: "⛓️" },
-  { id: 6, title: "Girlfriend Experience", description: "Full POV · 30 min", price: 35, emoji: "💕" },
-  { id: 7, title: "Anal Play", description: "Toys, very explicit · 20 min", price: 40, emoji: "🍑" },
-  { id: 8, title: "Cum Show", description: "Multiple orgasms · 15 min", price: 28, emoji: "💦" },
-];
-
-const videoTypes = [
-  { id: "solo", label: "Solo", basePrice: 100, emoji: "💋" },
+  { id: 1, title: "Strip Tease", description: "Slow seductive tease · 3 min", price: 15, emoji: "💃" },
+  { id: 2, title: "Dildo Tease", description: "Sensual toy play · 17 min", price: 50, emoji: "🎀" },
+  { id: 3, title: "Yoga Vid", description: "Stretch & flex · 10 min", price: 30, emoji: "🧘" },
 ];
 
 const accessoryOptions = [
@@ -24,6 +15,7 @@ const accessoryOptions = [
   { id: "lingerie", label: "Lingerie Set", price: 20 },
   { id: "heels", label: "Heels", price: 10 },
   { id: "outfit", label: "Custom Outfit", price: 25 },
+  { id: "yoga-pants", label: "Yoga Pants", price: 15 },
 ];
 
 const gradients = [
@@ -88,57 +80,6 @@ function VideoModal({ video, onClose }: { video: typeof ppvVideos[0]; onClose: (
         </button>
         <p className="modal-note">Payment integration coming soon</p>
       </div>
-    </div>
-  );
-}
-
-// ===== BOOBIE PIC UPLOAD PLACEHOLDER =====
-
-function BoobieUpload({ index, label }: { index: number; label: string }) {
-  const [preview, setPreview] = useState<string | null>(null);
-  const fileRef = useRef<HTMLInputElement>(null);
-
-  const handleFile = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (ev) => setPreview(ev.target?.result as string);
-      reader.readAsDataURL(file);
-    }
-  };
-
-  const colors = [
-    "from-rose-900/40 to-pink-900/30",
-    "from-pink-900/40 to-fuchsia-900/30",
-    "from-fuchsia-900/40 to-rose-900/30",
-  ];
-
-  return (
-    <div>
-      <label className="form-label">{label}</label>
-      <input
-        ref={fileRef}
-        type="file"
-        accept="image/*"
-        className="hidden"
-        onChange={handleFile}
-        id={`boob-upload-${index}`}
-      />
-      <button
-        type="button"
-        className={`boobie-upload-box bg-gradient-to-br ${colors[index % 3]}`}
-        onClick={() => fileRef.current?.click()}
-        aria-label={`Upload ${label}`}
-      >
-        {preview ? (
-          <img src={preview} alt={label} className="boobie-preview" />
-        ) : (
-          <div className="boobie-placeholder">
-            <span className="boobie-icon">📸</span>
-            <span className="boobie-text">Tap to add pic</span>
-          </div>
-        )}
-      </button>
     </div>
   );
 }
@@ -210,25 +151,17 @@ function BfApplicationPanel() {
   const [form, setForm] = useState({
     name: "",
     username: "",
-    favorite_content: "",
-    fantasies: "",
-    frequency: "",
-    open_ended: "",
+    q1_interests: "",
+    q2_body_part: "",
+    q3_turn_ons: "",
+    q4_tease_or_payoff: "",
+    q5_about_you: "",
   });
-  const [freqChips, setFreqChips] = useState<string[]>([]);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   const set = (field: string, value: string) => {
     setForm((p) => ({ ...p, [field]: value }));
     if (errors[field]) setErrors((e) => { const n = { ...e }; delete n[field]; return n; });
-  };
-
-  const toggleFreq = (opt: string) => {
-    setFreqChips((prev) => {
-      const next = prev.includes(opt) ? prev.filter((f) => f !== opt) : [...prev, opt];
-      set("frequency", next.join(", "));
-      return next;
-    });
   };
 
   const validate = () => {
@@ -246,7 +179,7 @@ function BfApplicationPanel() {
       const r = await fetch("/api/questionnaire", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...form, frequency: freqChips.join(", "), additional_notes: form.open_ended }),
+        body: JSON.stringify(form),
       });
       if (r.ok) setSubmitted(true);
     } catch (e) {
@@ -270,11 +203,11 @@ function BfApplicationPanel() {
     <div className="panel active">
       <div className="panel-header">
         <h2 className="font-cormorant">BF Application ❤️</h2>
-        <p>5 questions so I can get to know you ❤️</p>
+        <p>5 questions so I can get to know what you like ❤️</p>
       </div>
 
       <div className="form-stack">
-        {/* Q1: Name & Email */}
+        {/* Q1: Name & Username */}
         <div className="bf-q-card">
           <div className="bf-q-header">
             <span className="bf-q-num">1</span>
@@ -312,59 +245,68 @@ function BfApplicationPanel() {
           </div>
         </div>
 
-        {/* Q2: Favorite Content */}
+        {/* Q2: Interests */}
         <div className="bf-q-card">
           <div className="bf-q-header">
             <span className="bf-q-num">2</span>
-            <span className="bf-q-title">What&apos;s your favorite content?</span>
-          </div>
-          <select
-            id="q-content"
-            className="form-select"
-            value={form.favorite_content}
-            onChange={(e) => set("favorite_content", e.target.value)}
-          >
-            <option value="">Select one...</option>
-            <option value="solo">Solo / Masturbation</option>
-            <option value="pov">POV</option>
-            <option value="fetish">Fetish / BDSM</option>
-            <option value="anal">Anal</option>
-            <option value="lesbian">Lesbian / Girl-Girl</option>
-            <option value="couple">Couple Content</option>
-            <option value="custom">Custom Requests</option>
-          </select>
-        </div>
-
-        {/* Q3: Fantasies */}
-        <div className="bf-q-card">
-          <div className="bf-q-header">
-            <span className="bf-q-num">3</span>
-            <span className="bf-q-title">What fantasies should I fulfill?</span>
+            <span className="bf-q-title">What are you most interested in exploring?</span>
           </div>
           <textarea
-            id="q-fantasies"
+            id="q-interests"
             className="form-input form-textarea"
-            placeholder="Tell me everything... I want to know what gets you excited"
+            placeholder="Tell me what you're curious about..."
             rows={3}
-            value={form.fantasies}
-            onChange={(e) => set("fantasies", e.target.value)}
+            value={form.q1_interests}
+            onChange={(e) => set("q1_interests", e.target.value)}
           />
         </div>
 
-        {/* Q4: Frequency */}
+        {/* Q3: Favorite body part */}
+        <div className="bf-q-card">
+          <div className="bf-q-header">
+            <span className="bf-q-num">3</span>
+            <span className="bf-q-title">What&apos;s your favorite body part?</span>
+          </div>
+          <textarea
+            id="q-body"
+            className="form-input form-textarea"
+            placeholder="Don't be shy..."
+            rows={2}
+            value={form.q2_body_part}
+            onChange={(e) => set("q2_body_part", e.target.value)}
+          />
+        </div>
+
+        {/* Q4: Turn-ons */}
         <div className="bf-q-card">
           <div className="bf-q-header">
             <span className="bf-q-num">4</span>
-            <span className="bf-q-title">How often do you want new content?</span>
+            <span className="bf-q-title">What turns you on the most?</span>
           </div>
-          <div className="chips" role="group" aria-label="Content frequency">
-            {["Daily", "Few times a week", "Weekly", "Whenever inspired"].map((opt) => (
+          <textarea
+            id="q-turnons"
+            className="form-input form-textarea"
+            placeholder="What gets you going..."
+            rows={3}
+            value={form.q3_turn_ons}
+            onChange={(e) => set("q3_turn_ons", e.target.value)}
+          />
+        </div>
+
+        {/* Q5: Tease or payoff */}
+        <div className="bf-q-card">
+          <div className="bf-q-header">
+            <span className="bf-q-num">5</span>
+            <span className="bf-q-title">What gets you most excited — the tease or the payoff?</span>
+          </div>
+          <div className="chips" role="group" aria-label="Preference">
+            {["The tease", "The payoff", "Both equally"].map((opt) => (
               <button
                 key={opt}
                 type="button"
-                className={`chip ${freqChips.includes(opt) ? "on" : ""}`}
-                onClick={() => toggleFreq(opt)}
-                aria-pressed={freqChips.includes(opt)}
+                className={`chip ${form.q4_tease_or_payoff === opt ? "on" : ""}`}
+                onClick={() => set("q4_tease_or_payoff", opt)}
+                aria-pressed={form.q4_tease_or_payoff === opt}
               >
                 {opt}
               </button>
@@ -372,19 +314,19 @@ function BfApplicationPanel() {
           </div>
         </div>
 
-        {/* Q5: Open-ended */}
+        {/* Q6: About you */}
         <div className="bf-q-card">
           <div className="bf-q-header">
-            <span className="bf-q-num">5</span>
-            <span className="bf-q-title">Show me what you like 💕</span>
+            <span className="bf-q-num">6</span>
+            <span className="bf-q-title">Tell me about yourself! Anything I should know?</span>
           </div>
           <textarea
-            id="q-open"
+            id="q-about"
             className="form-input form-textarea"
-            placeholder="Tell me what you love, what you're into, what you'd love to see..."
+            placeholder="Anything you want me to know — fantasies, limits, preferences..."
             rows={4}
-            value={form.open_ended}
-            onChange={(e) => set("open_ended", e.target.value)}
+            value={form.q5_about_you}
+            onChange={(e) => set("q5_about_you", e.target.value)}
           />
         </div>
 
@@ -408,6 +350,10 @@ function VideosPanel() {
         <div className="label">Pay Per View</div>
         <h2 className="font-cormorant">Exclusive Videos</h2>
         <p>Tap to unlock. Each one made with you in mind.</p>
+      </div>
+
+      <div className="dm-instruction">
+        💬 DM the number with tip to unlock
       </div>
 
       {ppvVideos.map((video, i) => (
@@ -441,25 +387,24 @@ function VideosPanel() {
 function CustomRequestPanel() {
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [minutes, setMinutes] = useState(15);
-  const [videoType, setVideoType] = useState("solo");
+  const [minutes, setMinutes] = useState(10);
   const [accs, setAccs] = useState<string[]>([]);
   const [rush, setRush] = useState(false);
   const [specialRequests, setSpecialRequests] = useState("");
   const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   const toggleAcc = (id: string) =>
     setAccs((p) => (p.includes(id) ? p.filter((a) => a !== id) : [...p, id]));
 
+  const basePrice = 100;
   const price = (() => {
-    const base = videoTypes.find((v) => v.id === videoType)?.basePrice || 100;
     const accTotal = accs.reduce((s, id) => {
       const a = accessoryOptions.find((x) => x.id === id);
       return s + (a?.price || 0);
     }, 0);
-    const durationPrice = base * (minutes / 10);
+    const durationPrice = basePrice * (minutes / 10);
     const subtotal = durationPrice + accTotal;
     return Math.round(rush ? subtotal * 1.5 : subtotal);
   })();
@@ -467,7 +412,7 @@ function CustomRequestPanel() {
   const validate = () => {
     const errs: Record<string, string> = {};
     if (!name.trim()) errs.name = "Please enter your name";
-    if (!email.trim()) errs.username = "Please enter your username";
+    if (!username.trim()) errs.username = "Please enter your username";
     setErrors(errs);
     return Object.keys(errs).length === 0;
   };
@@ -480,7 +425,7 @@ function CustomRequestPanel() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          name, email, minutes, video_type: videoType, accessories: accs,
+          name, username, minutes, accessories: accs,
           special_requests: specialRequests, estimated_price: price, rush,
         }),
       });
@@ -513,8 +458,12 @@ function CustomRequestPanel() {
         <p>Build your dream video. Every detail, your way.</p>
       </div>
 
+      <div className="dm-instruction">
+        💬 DM me to discuss your custom request
+      </div>
+
       <div className="form-stack">
-        {/* Name & Email */}
+        {/* Name & Username */}
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.75rem" }}>
           <div>
             <label className="form-label" htmlFor="cr-name">Name <span className="required" aria-label="required">*</span></label>
@@ -537,33 +486,12 @@ function CustomRequestPanel() {
               type="text"
               className={`form-input ${errors.username ? "input-error" : ""}`}
               placeholder="your username"
-              value={email}
-              onChange={(e) => { setEmail(e.target.value); if (errors.username) setErrors((er) => { const n = { ...er }; delete n.username; return n; }); }}
+              value={username}
+              onChange={(e) => { setUsername(e.target.value); if (errors.username) setErrors((er) => { const n = { ...er }; delete n.username; return n; }); }}
               aria-invalid={!!errors.username}
               aria-describedby={errors.username ? "cr-username-error" : undefined}
             />
             {errors.username && <p className="field-error" id="cr-username-error" role="alert">{errors.username}</p>}
-          </div>
-        </div>
-
-        {/* Video Type */}
-        <div>
-          <label className="form-label" style={{ marginBottom: "0.5rem" }}>Video Type</label>
-          <div className="btn-grid" role="radiogroup" aria-label="Video type">
-            {videoTypes.map((vt) => (
-              <button
-                key={vt.id}
-                type="button"
-                role="radio"
-                aria-checked={videoType === vt.id}
-                className={`type-btn ${videoType === vt.id ? "selected" : ""}`}
-                onClick={() => setVideoType(vt.id)}
-              >
-                <span className="type-btn-emoji" aria-hidden="true">{vt.emoji}</span>
-                <span className="type-btn-name">{vt.label}</span>
-                <span className="type-btn-from">from ${vt.basePrice}</span>
-              </button>
-            ))}
           </div>
         </div>
 
@@ -587,6 +515,13 @@ function CustomRequestPanel() {
             aria-valuenow={minutes}
             aria-valuetext={`${minutes} minutes`}
           />
+          <div className="range-labels">
+            <span>5 min</span>
+            <span>15 min</span>
+            <span>30 min</span>
+            <span>45 min</span>
+            <span>60 min</span>
+          </div>
         </div>
 
         {/* Rush Job */}
@@ -602,9 +537,9 @@ function CustomRequestPanel() {
           </button>
         </div>
 
-        {/* Extras */}
+        {/* Props / Extras */}
         <div>
-          <label className="form-label" style={{ marginBottom: "0.5rem" }}>Extras</label>
+          <label className="form-label" style={{ marginBottom: "0.5rem" }}>Props & Extras</label>
           <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
             {accessoryOptions.map((acc) => (
               <button
@@ -639,9 +574,9 @@ function CustomRequestPanel() {
       <div className="sticky-price" id="stickyPrice">
         <div className="sticky-info">
           <span className="sticky-label">Est.</span>
-          <span className="sticky-amount font-cormorant"><AnimatedPrice value={price} /></span>
+          <span className="sticky-amount font-cormorant">$<AnimatedPrice value={price} /></span>
           <span className="sticky-detail">
-            {minutes}min · {videoTypes.find((v) => v.id === videoType)?.label}
+            {minutes}min
             {rush && " · ⚡ Rush"}
             {accs.length > 0 && ` · ${accs.length} extra${accs.length > 1 ? 's' : ''}`}
           </span>

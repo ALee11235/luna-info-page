@@ -155,7 +155,23 @@ h1, h2, h3, h4, h5, h6 {
   box-shadow: var(--shadow-lg), var(--shadow-glow);
 }
 
-/* ===== CUSTOM FONT CLASSES ===== */
+/* ============================================================
+   DM INSTRUCTION
+   ============================================================ */
+
+.dm-instruction {
+  text-align: center;
+  padding: 0.75rem 1rem;
+  margin: 0.75rem 1.5rem 0;
+  background: var(--accent-soft);
+  border: 1px solid var(--border-strong);
+  border-radius: 1rem;
+  font-size: 0.85rem;
+  color: var(--accent-primary);
+  font-weight: 500;
+  max-width: 500px;
+  width: calc(100% - 3rem);
+}
 .font-cormorant {
   font-family: var(--font-cormorant), 'Cormorant Garamond', Georgia, serif;
 }
