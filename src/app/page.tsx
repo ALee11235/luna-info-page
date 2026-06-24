@@ -96,7 +96,7 @@ export default function Home() {
   ];
 
   return (
-    <div className="min-h-screen flex flex-col pb-[56px] md:pb-0">
+    <div className="min-h-screen flex flex-col pb-[56px] md:pb-0 max-w-[500px] mx-auto w-full">
       {/* PROFILE HEADER */}
       <div className="profile-header">
         <div className="avatar" aria-hidden="true">✨</div>
@@ -220,7 +220,7 @@ function BfApplicationPanel() {
                 id="q-name"
                 type="text"
                 className={`form-input ${errors.name ? "input-error" : ""}`}
-                placeholder="What should I call you?"
+                placeholder="Your name"
                 value={form.name}
                 onChange={(e) => set("name", e.target.value)}
                 aria-invalid={!!errors.name}
@@ -234,7 +234,7 @@ function BfApplicationPanel() {
                 id="q-username"
                 type="text"
                 className={`form-input ${errors.username ? "input-error" : ""}`}
-                placeholder="your username"
+                placeholder=""
                 value={form.username}
                 onChange={(e) => set("username", e.target.value)}
                 aria-invalid={!!errors.username}
@@ -326,7 +326,6 @@ function VideosPanel() {
   return (
     <div className="panel active">
       <div className="panel-header">
-        <div className="label">Pay Per View</div>
         <h2 className="font-cormorant">Exclusive Videos</h2>
       </div>
 
@@ -460,7 +459,7 @@ function CustomRequestPanel() {
               id="cr-username"
               type="text"
               className={`form-input ${errors.username ? "input-error" : ""}`}
-              placeholder="your username"
+              placeholder=""
               value={username}
               onChange={(e) => { setUsername(e.target.value); if (errors.username) setErrors((er) => { const n = { ...er }; delete n.username; return n; }); }}
               aria-invalid={!!errors.username}
