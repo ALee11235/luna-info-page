@@ -340,6 +340,7 @@ function VideosPanel() {
           onClick={() => setSelectedVideo(video)}
           aria-label={`Unlock ${video.title} for $${video.price}`}
         >
+          <div className="link-btn-num">{i + 1}</div>
           <div className={`link-btn-icon bg-gradient-to-br ${gradients[i]}`} aria-hidden="true">
             {video.emoji}
           </div>
