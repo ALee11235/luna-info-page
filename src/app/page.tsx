@@ -254,7 +254,7 @@ function BfApplicationPanel() {
           <textarea
             id="q-interests"
             className="form-input form-textarea"
-            placeholder="Tell me what you're curious about..."
+            placeholder="What are you curious about..."
             rows={3}
             value={form.q1_interests}
             onChange={(e) => set("q1_interests", e.target.value)}
