@@ -211,7 +211,7 @@ function BfApplicationPanel() {
         <div className="bf-q-card">
           <div className="bf-q-header">
             <span className="bf-q-num">1</span>
-            <span className="bf-q-title">Who are you?</span>
+            <span className="bf-q-title">What should I call you?</span>
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.75rem" }}>
             <div>
