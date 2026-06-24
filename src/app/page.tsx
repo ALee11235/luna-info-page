@@ -368,7 +368,6 @@ function CustomRequestPanel() {
   const [accs, setAccs] = useState<string[]>([]);
   const [rush, setRush] = useState(false);
   const [specialRequests, setSpecialRequests] = useState("");
-  const [name, setName] = useState("");
   const [username, setUsername] = useState("");
   const [errors, setErrors] = useState<Record<string, string>>({});
 
@@ -389,7 +388,6 @@ function CustomRequestPanel() {
 
   const validate = () => {
     const errs: Record<string, string> = {};
-    if (!name.trim()) errs.name = "Please enter your name";
     if (!username.trim()) errs.username = "Please enter your username";
     setErrors(errs);
     return Object.keys(errs).length === 0;
@@ -403,7 +401,7 @@ function CustomRequestPanel() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          name, username, minutes, accessories: accs,
+          username, minutes, accessories: accs,
           special_requests: specialRequests, estimated_price: price, rush,
         }),
       });
@@ -437,36 +435,20 @@ function CustomRequestPanel() {
       </div>
 
       <div className="form-stack">
-        {/* Name & Username */}
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.75rem" }}>
-          <div>
-            <label className="form-label" htmlFor="cr-name">Name <span className="required" aria-label="required">*</span></label>
-            <input
-              id="cr-name"
-              type="text"
-              className={`form-input ${errors.name ? "input-error" : ""}`}
-              placeholder=""
-              value={name}
-              onChange={(e) => { setName(e.target.value); if (errors.name) setErrors((er) => { const n = { ...er }; delete n.name; return n; }); }}
-              aria-invalid={!!errors.name}
-              aria-describedby={errors.name ? "cr-name-error" : undefined}
-            />
-            {errors.name && <p className="field-error" id="cr-name-error" role="alert">{errors.name}</p>}
-          </div>
-          <div>
-            <label className="form-label" htmlFor="cr-username">Username <span className="required" aria-label="required">*</span></label>
-            <input
-              id="cr-username"
-              type="text"
-              className={`form-input ${errors.username ? "input-error" : ""}`}
-              placeholder=""
-              value={username}
-              onChange={(e) => { setUsername(e.target.value); if (errors.username) setErrors((er) => { const n = { ...er }; delete n.username; return n; }); }}
-              aria-invalid={!!errors.username}
-              aria-describedby={errors.username ? "cr-username-error" : undefined}
-            />
-            {errors.username && <p className="field-error" id="cr-username-error" role="alert">{errors.username}</p>}
-          </div>
+        {/* Username */}
+        <div>
+          <label className="form-label" htmlFor="cr-username">Username <span className="required" aria-label="required">*</span></label>
+          <input
+            id="cr-username"
+            type="text"
+            className={`form-input ${errors.username ? "input-error" : ""}`}
+            placeholder=""
+            value={username}
+            onChange={(e) => { setUsername(e.target.value); if (errors.username) setErrors((er) => { const n = { ...er }; delete n.username; return n; }); }}
+            aria-invalid={!!errors.username}
+            aria-describedby={errors.username ? "cr-username-error" : undefined}
+          />
+          {errors.username && <p className="field-error" id="cr-username-error" role="alert">{errors.username}</p>}
         </div>
 
         {/* Duration */}
@@ -546,7 +528,7 @@ function CustomRequestPanel() {
       <div className="sticky-price" id="stickyPrice">
         <div className="sticky-info">
           <span className="sticky-label">Est.</span>
-          <span className="sticky-amount font-cormorant">$<AnimatedPrice value={price} /></span>
+          <span className="sticky-amount font-cormorant"><AnimatedPrice value={price} /></span>
           <span className="sticky-detail">
             {minutes}min
             {rush && " · ⚡ Rush"}
@@ -560,7 +542,7 @@ function CustomRequestPanel() {
           className="sticky-btn"
           style={{ textDecoration: "none", display: "flex", alignItems: "center", justifyContent: "center" }}
         >
-          Gift link
+          Tip here
         </a>
       </div>
     </div>
