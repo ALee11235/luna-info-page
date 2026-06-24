@@ -77,7 +77,7 @@ function VideoModal({ video, onClose }: { video: typeof ppvVideos[0]; onClose: (
         <p className="modal-desc">{video.description}</p>
         <div className="modal-price">${video.price}</div>
         <button className="modal-unlock-btn" onClick={onClose}>
-          Unlock for ${video.price}
+          ${video.price}
         </button>
         <p className="modal-note">Payment integration coming soon</p>
       </div>
@@ -137,7 +137,7 @@ export default function Home() {
       {/* FOOTER */}
       <footer className="site-footer">
         <div className="footer-ornament" aria-hidden="true">✦</div>
-        <p className="footer-text">Exclusive Content for Subscribers</p>
+        <p className="footer-text">You&apos;ve found my spot 😜</p>
         <p className="footer-copy">© {new Date().getFullYear()} Luna. All rights reserved.</p>
       </footer>
     </div>
@@ -203,7 +203,7 @@ function BfApplicationPanel() {
     <div className="panel active">
       <div className="panel-header">
         <h2 className="font-cormorant">BF Application ❤️</h2>
-        <p>5 questions so I can get to know you ❤️</p>
+        <p>5 questions to get to know you ❤️</p>
       </div>
 
       <div className="form-stack">
@@ -328,7 +328,6 @@ function VideosPanel() {
       <div className="panel-header">
         <div className="label">Pay Per View</div>
         <h2 className="font-cormorant">Exclusive Videos</h2>
-        <p>Each one made with you in mind.</p>
       </div>
 
       <div className="dm-instruction">
