@@ -15,7 +15,7 @@ const dmSans = DM_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Luna — BF Application ❤️",
+  title: "Luna 🍒",
   description: "Exclusive content and custom requests for subscribers",
 };
 

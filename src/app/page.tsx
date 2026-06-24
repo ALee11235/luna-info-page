@@ -265,7 +265,7 @@ function BfApplicationPanel() {
         <div className="bf-q-card">
           <div className="bf-q-header">
             <span className="bf-q-num">3</span>
-            <span className="bf-q-title">What&apos;s your favorite body part?</span>
+            <span className="bf-q-title">What&apos;s your favorite body part of mine?</span>
           </div>
           <textarea
             id="q-body"
@@ -302,16 +302,16 @@ function BfApplicationPanel() {
           <textarea
             id="q-about"
             className="form-input form-textarea"
-            placeholder="Anything you want me to know — fantasies, limits, preferences..."
+            placeholder="Anything you want me to know — fantasies, preferences..."
             rows={4}
             value={form.q5_about_you}
             onChange={(e) => set("q5_about_you", e.target.value)}
           />
         </div>
 
-        <button className="submit-btn" onClick={submit} disabled={loading} aria-busy={loading}>
+        <button className="submit-btn" onClick={submit} disabled={loading || submitted} aria-busy={loading}>
           {loading ? <span className="btn-loading" aria-hidden="true">⏳</span> : null}
-          {loading ? "Submitting..." : "Submit Application ❤️"}
+          {submitted ? "Submitted ❤️" : loading ? "Submitting..." : "Submit Application ❤️"}
         </button>
       </div>
     </div>
@@ -430,7 +430,7 @@ function CustomRequestPanel() {
   }
 
   return (
-    <div className="panel active" style={{ position: "relative" }}>
+    <div className="panel active" style={{ position: "relative", paddingBottom: "80px" }}>
       <div className="panel-header">
         <div className="label">Premium Service</div>
         <h2 className="font-cormorant">Custom Request</h2>
@@ -561,7 +561,7 @@ function CustomRequestPanel() {
           className="sticky-btn"
           style={{ textDecoration: "none", display: "flex", alignItems: "center", justifyContent: "center" }}
         >
-          Gift X here
+          Gift link
         </a>
       </div>
     </div>
