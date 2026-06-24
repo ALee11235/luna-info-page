@@ -220,7 +220,7 @@ function BfApplicationPanel() {
                 id="q-name"
                 type="text"
                 className={`form-input ${errors.name ? "input-error" : ""}`}
-                placeholder="Your name"
+                placeholder=""
                 value={form.name}
                 onChange={(e) => set("name", e.target.value)}
                 aria-invalid={!!errors.name}
@@ -445,7 +445,7 @@ function CustomRequestPanel() {
               id="cr-name"
               type="text"
               className={`form-input ${errors.name ? "input-error" : ""}`}
-              placeholder="Your name"
+              placeholder=""
               value={name}
               onChange={(e) => { setName(e.target.value); if (errors.name) setErrors((er) => { const n = { ...er }; delete n.name; return n; }); }}
               aria-invalid={!!errors.name}
