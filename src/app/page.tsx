@@ -11,8 +11,9 @@ const ppvVideos = [
 ];
 
 const accessoryOptions = [
-  { id: "dildo", label: "Dildo", price: 20 },
+  { id: "dildo", label: "Dildo", price: 25 },
   { id: "lingerie", label: "Lingerie Set", price: 20 },
+  { id: "stripper-heels", label: "Stripper Heels", price: 30 },
   { id: "heels", label: "Heels", price: 10 },
   { id: "outfit", label: "Custom Outfit", price: 25 },
   { id: "yoga-pants", label: "Yoga Pants", price: 15 },
@@ -100,7 +101,7 @@ export default function Home() {
       <div className="profile-header">
         <div className="avatar" aria-hidden="true">✨</div>
         <div className="profile-name">Luna</div>
-        <div className="profile-bio">Exclusive content & custom requests. Made just for you.</div>
+        <div className="profile-bio">You&apos;ve found my spot 😜</div>
       </div>
 
       {/* SECTION TABS (horizontal scroll) */}
@@ -154,7 +155,6 @@ function BfApplicationPanel() {
     q1_interests: "",
     q2_body_part: "",
     q3_turn_ons: "",
-    q4_tease_or_payoff: "",
     q5_about_you: "",
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -203,7 +203,7 @@ function BfApplicationPanel() {
     <div className="panel active">
       <div className="panel-header">
         <h2 className="font-cormorant">BF Application ❤️</h2>
-        <p>5 questions so I can get to know what you like ❤️</p>
+        <p>5 questions so I can get to know you ❤️</p>
       </div>
 
       <div className="form-stack">
@@ -249,7 +249,7 @@ function BfApplicationPanel() {
         <div className="bf-q-card">
           <div className="bf-q-header">
             <span className="bf-q-num">2</span>
-            <span className="bf-q-title">What are you most interested in exploring?</span>
+            <span className="bf-q-title">Tell me about yourself...</span>
           </div>
           <textarea
             id="q-interests"
@@ -293,31 +293,10 @@ function BfApplicationPanel() {
           />
         </div>
 
-        {/* Q5: Tease or payoff */}
+        {/* Q5: About you */}
         <div className="bf-q-card">
           <div className="bf-q-header">
             <span className="bf-q-num">5</span>
-            <span className="bf-q-title">What gets you most excited — the tease or the payoff?</span>
-          </div>
-          <div className="chips" role="group" aria-label="Preference">
-            {["The tease", "The payoff", "Both equally"].map((opt) => (
-              <button
-                key={opt}
-                type="button"
-                className={`chip ${form.q4_tease_or_payoff === opt ? "on" : ""}`}
-                onClick={() => set("q4_tease_or_payoff", opt)}
-                aria-pressed={form.q4_tease_or_payoff === opt}
-              >
-                {opt}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* Q6: About you */}
-        <div className="bf-q-card">
-          <div className="bf-q-header">
-            <span className="bf-q-num">6</span>
             <span className="bf-q-title">Tell me about yourself! Anything I should know?</span>
           </div>
           <textarea
@@ -349,7 +328,7 @@ function VideosPanel() {
       <div className="panel-header">
         <div className="label">Pay Per View</div>
         <h2 className="font-cormorant">Exclusive Videos</h2>
-        <p>Tap to unlock. Each one made with you in mind.</p>
+        <p>Each one made with you in mind.</p>
       </div>
 
       <div className="dm-instruction">
@@ -387,7 +366,7 @@ function VideosPanel() {
 function CustomRequestPanel() {
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [minutes, setMinutes] = useState(10);
+  const [minutes, setMinutes] = useState(30);
   const [accs, setAccs] = useState<string[]>([]);
   const [rush, setRush] = useState(false);
   const [specialRequests, setSpecialRequests] = useState("");
@@ -406,7 +385,8 @@ function CustomRequestPanel() {
     }, 0);
     const durationPrice = basePrice * (minutes / 10);
     const subtotal = durationPrice + accTotal;
-    return Math.round(rush ? subtotal * 1.5 : subtotal);
+    const raw = rush ? subtotal * 1.5 : subtotal;
+    return Math.round(raw / 50) * 50;
   })();
 
   const validate = () => {
@@ -458,10 +438,6 @@ function CustomRequestPanel() {
         <p>Build your dream video. Every detail, your way.</p>
       </div>
 
-      <div className="dm-instruction">
-        💬 DM me to discuss your custom request
-      </div>
-
       <div className="form-stack">
         {/* Name & Username */}
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.75rem" }}>
@@ -504,37 +480,22 @@ function CustomRequestPanel() {
           <input
             id="cr-duration"
             type="range"
-            min={5}
+            min={30}
             max={60}
-            step={5}
+            step={15}
             value={minutes}
             onChange={(e) => setMinutes(Number(e.target.value))}
             className="range-input"
-            aria-valuemin={5}
+            aria-valuemin={30}
             aria-valuemax={60}
             aria-valuenow={minutes}
             aria-valuetext={`${minutes} minutes`}
           />
           <div className="range-labels">
-            <span>5 min</span>
-            <span>15 min</span>
             <span>30 min</span>
             <span>45 min</span>
             <span>60 min</span>
           </div>
-        </div>
-
-        {/* Rush Job */}
-        <div>
-          <button
-            type="button"
-            className={`extra-toggle ${rush ? "on" : ""}`}
-            onClick={() => setRush(!rush)}
-            aria-pressed={rush}
-          >
-            <span>⚡ Rush Job (faster delivery)</span>
-            <span className="extra-plus">+50%</span>
-          </button>
         </div>
 
         {/* Props / Extras */}
@@ -562,11 +523,24 @@ function CustomRequestPanel() {
           <textarea
             id="cr-requests"
             className="form-input form-textarea"
-            placeholder="Describe your dream scene in detail..."
+            placeholder="Describe it in all its sexy details..."
             rows={3}
             value={specialRequests}
             onChange={(e) => setSpecialRequests(e.target.value)}
           />
+        </div>
+
+        {/* Rush Job */}
+        <div>
+          <button
+            type="button"
+            className={`extra-toggle ${rush ? "on" : ""}`}
+            onClick={() => setRush(!rush)}
+            aria-pressed={rush}
+          >
+            <span>Can&apos;t wait? 😉 Rush job (3 days)</span>
+            <span className="extra-plus">+50%</span>
+          </button>
         </div>
       </div>
 
@@ -581,9 +555,15 @@ function CustomRequestPanel() {
             {accs.length > 0 && ` · ${accs.length} extra${accs.length > 1 ? 's' : ''}`}
           </span>
         </div>
-        <button className="sticky-btn" onClick={submit} disabled={loading} aria-busy={loading}>
-          {loading ? "..." : "Submit"}
-        </button>
+        <a
+          href="https://throne.com/ashyasian/item/fc8e1f23-bfc8-4a42-ac2e-987c31ca4b2f"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="sticky-btn"
+          style={{ textDecoration: "none", display: "flex", alignItems: "center", justifyContent: "center" }}
+        >
+          Gift X here
+        </a>
       </div>
     </div>
   );
