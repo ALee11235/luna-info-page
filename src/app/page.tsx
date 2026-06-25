@@ -107,7 +107,7 @@ export default function Home() {
       {/* LAYOUT: Desktop = sidebar tabs + content | Mobile = stacked */}
       <div className="md:flex md:flex-1">
         {/* SECTION TABS — vertical sidebar on desktop, horizontal on mobile */}
-        <nav className="section-tabs md:section-tabs-desktop" role="tablist" aria-label="Content sections">
+        <nav className="section-tabs md:flex-col md:justify-start md:px-6 md:py-8 md:min-w-[200px] md:max-w-[240px] md:border-r md:border-[var(--border-subtle)] md:bg-[var(--bg-secondary)] md:sticky md:top-0 md:self-start md:overflow-x-visible" role="tablist" aria-label="Content sections">
           {tabs.map((tab, i) => (
             <button
               key={i}

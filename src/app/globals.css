@@ -964,23 +964,26 @@ h1, h2, h3, h4, h5, h6 {
     max-width: 400px;
   }
 
-  /* Desktop tabs: vertical sidebar */
-  .section-tabs-desktop {
-    display: flex;
-    flex-direction: column;
+  /* Desktop: vertical tab sidebar */
+  .section-tabs {
+    flex-direction: column !important;
+    justify-content: flex-start !important;
     gap: 0.5rem;
-    padding: 2rem 1.5rem;
+    padding: 2rem 1.5rem !important;
     min-width: 200px;
     max-width: 240px;
+    width: auto !important;
     border-right: 1px solid var(--border-subtle);
     background: var(--bg-secondary);
     position: sticky;
     top: 0;
     align-self: flex-start;
-    overflow-x: visible;
+    overflow-x: visible !important;
+    scrollbar-width: auto;
+    -webkit-overflow-scrolling: auto;
   }
 
-  .section-tabs-desktop .section-tab {
+  .section-tabs .section-tab {
     width: 100%;
     text-align: left;
     justify-content: flex-start;
@@ -990,7 +993,7 @@ h1, h2, h3, h4, h5, h6 {
     min-height: 48px;
   }
 
-  .section-tabs-desktop .section-tab.active {
+  .section-tabs .section-tab.active {
     background: var(--accent-soft);
     color: var(--accent-primary);
     border-color: var(--accent-primary);
@@ -1052,9 +1055,9 @@ h1, h2, h3, h4, h5, h6 {
     padding: 2rem 3rem;
   }
 
-  .section-tabs-desktop {
+  .section-tabs {
     min-width: 240px;
-    padding: 2rem 2rem;
+    padding: 2rem 2rem !important;
   }
 }
 
