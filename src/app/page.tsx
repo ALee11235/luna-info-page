@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 // ===== DATA =====
 
@@ -96,54 +96,56 @@ export default function Home() {
   ];
 
   return (
-    <div className="min-h-screen flex flex-col md:flex-row md:pb-0 max-w-[500px] md:max-w-[1200px] mx-auto w-full">
-      {/* PROFILE HEADER */}
-      <div className="profile-header">
-        <div className="avatar" aria-hidden="true">✨</div>
-        <div className="profile-name">Luna</div>
-        <div className="profile-bio">You&apos;ve found my spot 😜</div>
+    <React.Fragment>
+      <div className="min-h-screen flex flex-col md:flex-row md:pb-0 max-w-[500px] md:max-w-[1200px] mx-auto w-full">
+        {/* PROFILE HEADER */}
+        <div className="profile-header">
+          <div className="avatar" aria-hidden="true">✨</div>
+          <div className="profile-name">Luna</div>
+          <div className="profile-bio">You&apos;ve found my spot 😜</div>
+        </div>
+
+        {/* LAYOUT: Desktop = sidebar tabs + content | Mobile = stacked */}
+        <div className="md:flex md:flex-1 min-w-0">
+          {/* SECTION TABS — vertical sidebar on desktop, horizontal on mobile */}
+          <nav className="section-tabs md:flex-col md:justify-start md:gap-2 md:px-6 md:py-8 md:min-w-[200px] md:max-w-[240px] md:w-auto md:border-r md:border-[var(--border-subtle)] md:bg-[var(--bg-secondary)] md:sticky md:top-0 md:self-start md:overflow-x-visible md:scrollbar-auto" role="tablist" aria-label="Content sections">
+            {tabs.map((tab, i) => (
+              <button
+                key={i}
+                role="tab"
+                aria-selected={activeTab === i}
+                aria-controls={`panel-${i}`}
+                id={`tab-${i}`}
+                onClick={() => setActiveTab(i)}
+                className={`section-tab ${activeTab === i ? "active" : ""}`}
+              >
+                {tab.label}
+              </button>
+            ))}
+          </nav>
+
+          {/* CONTENT PANELS */}
+          <main className="flex-1 min-w-0">
+            <div id="panel-0" role="tabpanel" aria-labelledby="tab-0" hidden={activeTab !== 0}>
+              <BfApplicationPanel />
+            </div>
+            <div id="panel-1" role="tabpanel" aria-labelledby="tab-1" hidden={activeTab !== 1}>
+              <VideosPanel />
+            </div>
+            <div id="panel-2" role="tabpanel" aria-labelledby="tab-2" hidden={activeTab !== 2}>
+              <CustomRequestPanel />
+            </div>
+          </main>
+        </div>
       </div>
 
-      {/* LAYOUT: Desktop = sidebar tabs + content | Mobile = stacked */}
-      <div className="md:flex md:flex-1 min-w-0">
-        {/* SECTION TABS — vertical sidebar on desktop, horizontal on mobile */}
-        <nav className="section-tabs md:flex-col md:justify-start md:gap-2 md:px-6 md:py-8 md:min-w-[200px] md:max-w-[240px] md:w-auto md:border-r md:border-[var(--border-subtle)] md:bg-[var(--bg-secondary)] md:sticky md:top-0 md:self-start md:overflow-x-visible md:scrollbar-auto" role="tablist" aria-label="Content sections">
-          {tabs.map((tab, i) => (
-            <button
-              key={i}
-              role="tab"
-              aria-selected={activeTab === i}
-              aria-controls={`panel-${i}`}
-              id={`tab-${i}`}
-              onClick={() => setActiveTab(i)}
-              className={`section-tab ${activeTab === i ? "active" : ""}`}
-            >
-              {tab.label}
-            </button>
-          ))}
-        </nav>
-
-        {/* CONTENT PANELS */}
-        <main className="flex-1 min-w-0">
-          <div id="panel-0" role="tabpanel" aria-labelledby="tab-0" hidden={activeTab !== 0}>
-            <BfApplicationPanel />
-          </div>
-          <div id="panel-1" role="tabpanel" aria-labelledby="tab-1" hidden={activeTab !== 1}>
-            <VideosPanel />
-          </div>
-          <div id="panel-2" role="tabpanel" aria-labelledby="tab-2" hidden={activeTab !== 2}>
-            <CustomRequestPanel />
-          </div>
-        </main>
-      </div>
-    </div>
-
-    {/* FOOTER — outside flex row, always at bottom */}
-    <footer className="site-footer">
-      <div className="footer-ornament" aria-hidden="true">✦</div>
-      <p className="footer-text">You&apos;ve found my spot 😜</p>
-      <p className="footer-copy">© {new Date().getFullYear()} Luna. All rights reserved.</p>
-    </footer>
+      {/* FOOTER — outside flex row, always at bottom */}
+      <footer className="site-footer">
+        <div className="footer-ornament" aria-hidden="true">✦</div>
+        <p className="footer-text">You&apos;ve found my spot 😜</p>
+        <p className="footer-copy">© {new Date().getFullYear()} Luna. All rights reserved.</p>
+      </footer>
+    </React.Fragment>
   );
 }
 

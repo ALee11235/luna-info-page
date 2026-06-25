@@ -1229,6 +1229,13 @@ h1, h2, h3, h4, h5, h6 {
   width: 100%;
 }
 
+@media (min-width: 768px) {
+  .site-footer {
+    max-width: 1200px;
+    border-top: 1px solid var(--border-subtle);
+  }
+}
+
 .footer-ornament {
   font-size: 1.25rem;
   color: var(--accent-muted);
