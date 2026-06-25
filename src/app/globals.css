@@ -964,36 +964,27 @@ h1, h2, h3, h4, h5, h6 {
     max-width: 400px;
   }
 
-  /* Desktop: vertical tab sidebar */
-  .section-tabs {
-    flex-direction: column !important;
-    justify-content: flex-start !important;
-    gap: 0.5rem;
-    padding: 2rem 1.5rem !important;
-    min-width: 200px;
-    max-width: 240px;
-    width: auto !important;
-    border-right: 1px solid var(--border-subtle);
-    background: var(--bg-secondary);
-    position: sticky;
+  /* Desktop: enhance Tailwind's section-tabs-desktop with custom styles Tailwind can't do */
+  .section-tabs-desktop {
+    border-right: 1px solid var(--border-subtle) !important;
+    background: var(--bg-secondary) !important;
+    min-width: 200px !important;
+    max-width: 240px !important;
+    position: sticky !important;
     top: 0;
-    align-self: flex-start;
+    align-self: flex-start !important;
     overflow-x: visible !important;
     scrollbar-width: auto;
-    -webkit-overflow-scrolling: auto;
   }
 
-  .section-tabs .section-tab {
-    width: 100%;
-    text-align: left;
-    justify-content: flex-start;
+  .section-tabs-desktop .section-tab {
     border-radius: 0.75rem;
     padding: 0.85rem 1.25rem;
     font-size: 0.9rem;
     min-height: 48px;
   }
 
-  .section-tabs .section-tab.active {
+  .section-tabs-desktop .section-tab.active {
     background: var(--accent-soft);
     color: var(--accent-primary);
     border-color: var(--accent-primary);
@@ -1055,8 +1046,8 @@ h1, h2, h3, h4, h5, h6 {
     padding: 2rem 3rem;
   }
 
-  .section-tabs {
-    min-width: 240px;
+  .section-tabs-desktop {
+    min-width: 240px !important;
     padding: 2rem 2rem !important;
   }
 }
