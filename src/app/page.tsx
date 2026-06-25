@@ -105,7 +105,7 @@ export default function Home() {
       </div>
 
       {/* LAYOUT: Desktop = sidebar tabs + content | Mobile = stacked */}
-      <div className="md:flex md:flex-1">
+      <div className="md:flex md:flex-1 min-w-0">
         {/* SECTION TABS — vertical sidebar on desktop, horizontal on mobile */}
         <nav className="section-tabs md:flex-col md:justify-start md:gap-2 md:px-6 md:py-8 md:min-w-[200px] md:max-w-[240px] md:w-auto md:border-r md:border-[var(--border-subtle)] md:bg-[var(--bg-secondary)] md:sticky md:top-0 md:self-start md:overflow-x-visible md:scrollbar-auto" role="tablist" aria-label="Content sections">
           {tabs.map((tab, i) => (
@@ -124,7 +124,7 @@ export default function Home() {
         </nav>
 
         {/* CONTENT PANELS */}
-        <main className="flex-1">
+        <main className="flex-1 min-w-0">
           <div id="panel-0" role="tabpanel" aria-labelledby="tab-0" hidden={activeTab !== 0}>
             <BfApplicationPanel />
           </div>
@@ -136,14 +136,14 @@ export default function Home() {
           </div>
         </main>
       </div>
-
-      {/* FOOTER */}
-      <footer className="site-footer">
-        <div className="footer-ornament" aria-hidden="true">✦</div>
-        <p className="footer-text">You&apos;ve found my spot 😜</p>
-        <p className="footer-copy">© {new Date().getFullYear()} Luna. All rights reserved.</p>
-      </footer>
     </div>
+
+    {/* FOOTER — outside flex row, always at bottom */}
+    <footer className="site-footer">
+      <div className="footer-ornament" aria-hidden="true">✦</div>
+      <p className="footer-text">You&apos;ve found my spot 😜</p>
+      <p className="footer-copy">© {new Date().getFullYear()} Luna. All rights reserved.</p>
+    </footer>
   );
 }
 
