@@ -206,7 +206,7 @@ function BfApplicationPanel() {
     <div className="panel active">
       <div className="panel-header">
         <h2 className="font-cormorant">BF Application ❤️</h2>
-        <p>5 questions to get to know you ❤️</p>
+        <p>5 questions to get to know you</p>
       </div>
 
       <div className="form-stack">
@@ -368,7 +368,7 @@ function VideosPanel() {
 function CustomRequestPanel() {
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [minutes, setMinutes] = useState(30);
+  const [minutes, setMinutes] = useState(10);
   const [accs, setAccs] = useState<string[]>([]);
   const [rush, setRush] = useState(false);
   const [specialRequests, setSpecialRequests] = useState("");
@@ -464,21 +464,21 @@ function CustomRequestPanel() {
           <input
             id="cr-duration"
             type="range"
-            min={30}
-            max={60}
-            step={15}
+            min={10}
+            max={30}
+            step={5}
             value={minutes}
             onChange={(e) => setMinutes(Number(e.target.value))}
             className="range-input"
-            aria-valuemin={30}
-            aria-valuemax={60}
+            aria-valuemin={10}
+            aria-valuemax={30}
             aria-valuenow={minutes}
             aria-valuetext={`${minutes} minutes`}
           />
           <div className="range-labels">
+            <span>10 min</span>
+            <span>20 min</span>
             <span>30 min</span>
-            <span>45 min</span>
-            <span>60 min</span>
           </div>
         </div>
 
