@@ -7,11 +7,11 @@ html, body {
 
 /* ===== DESIGN TOKENS — Warm & Intimate ===== */
 :root {
-  /* Backgrounds — dark crimson */
-  --bg-primary: #0a0505;
-  --bg-secondary: #120a0a;
-  --bg-card: #1a0f10;
-  --bg-elevated: #221518;
+  /* Backgrounds — Cherry Noir */
+  --bg-primary: #0a0506;
+  --bg-secondary: #140a0c;
+  --bg-card: #1e1012;
+  --bg-elevated: #281518;
 
   /* Accent — soft gold */
   --accent-primary: #d4a853;
@@ -26,9 +26,9 @@ html, body {
   --text-secondary: #9e8e84;
   --text-muted: #7a6b62;
 
-  /* Borders — crimson tint */
-  --border-subtle: rgba(139, 26, 26, 0.15);
-  --border-default: rgba(139, 26, 26, 0.25);
+  /* Borders — rose red */
+  --border-subtle: rgba(122, 32, 48, 0.15);
+  --border-default: rgba(122, 32, 48, 0.25);
   --border-strong: rgba(212, 168, 83, 0.3);
 
   /* Shadows */
@@ -222,7 +222,7 @@ h1, h2, h3, h4, h5, h6 {
   width: 100%;
   max-width: 500px;
   height: 500px;
-  background: radial-gradient(ellipse, rgba(139, 26, 26, 0.1) 0%, transparent 60%);
+  background: radial-gradient(ellipse, rgba(155, 35, 53, 0.12) 0%, transparent 60%);
   pointer-events: none;
 }
 
@@ -940,7 +940,7 @@ h1, h2, h3, h4, h5, h6 {
 @media (min-width: 768px) {
   body {
     background: 
-      radial-gradient(ellipse at 30% 0%, rgba(139, 26, 26, 0.08) 0%, transparent 50%),
+      radial-gradient(ellipse at 30% 0%, rgba(155, 35, 53, 0.1) 0%, transparent 50%),
       radial-gradient(ellipse at 70% 100%, rgba(212, 168, 83, 0.04) 0%, transparent 50%),
       var(--bg-primary);
   }
@@ -1007,7 +1007,7 @@ h1, h2, h3, h4, h5, h6 {
     top: 2rem;
     bottom: 2rem;
     width: 3px;
-    background: linear-gradient(to bottom, var(--accent-primary), transparent);
+    background: linear-gradient(to bottom, #9b2335, transparent);
     border-radius: 3px;
     opacity: 0.6;
   }
