@@ -964,26 +964,7 @@ h1, h2, h3, h4, h5, h6 {
     max-width: 400px;
   }
 
-  /* Desktop: enhance Tailwind's section-tabs-desktop with custom styles Tailwind can't do */
-  .section-tabs-desktop {
-    display: flex !important;
-    flex-direction: column !important;
-    justify-content: flex-start !important;
-    gap: 0.5rem !important;
-    padding: 2rem 1.5rem !important;
-    border-right: 1px solid var(--border-subtle) !important;
-    background: var(--bg-secondary) !important;
-    min-width: 200px !important;
-    max-width: 240px !important;
-    width: auto !important;
-    position: sticky !important;
-    top: 0;
-    align-self: flex-start !important;
-    overflow-x: visible !important;
-    scrollbar-width: auto;
-    -webkit-overflow-scrolling: auto;
-  }
-
+  /* Desktop: enhance tab button styles (Tailwind handles layout) */
   .section-tabs-desktop .section-tab {
     border-radius: 0.75rem;
     padding: 0.85rem 1.25rem;
@@ -1054,7 +1035,7 @@ h1, h2, h3, h4, h5, h6 {
   }
 
   .section-tabs-desktop {
-    min-width: 240px !important;
+    min-width: 240px;
     padding: 2rem 2rem !important;
   }
 }
