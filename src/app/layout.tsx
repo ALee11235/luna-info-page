@@ -15,8 +15,8 @@ const dmSans = DM_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "The Money Milker 💰",
-  description: "Pay pig, present yourself. Exclusive content and custom requests for subs.",
+  title: "Luna 🍒",
+  description: "Exclusive content and custom requests for subscribers",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

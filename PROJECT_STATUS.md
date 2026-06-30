@@ -1,8 +1,8 @@
-# Project Status — The Money Milker Info Page
+# Project Status — Luna Info Page
 
 **Date**: May 17, 2025
 **Version**: 1.0.0
-**Live URL**: https://p01--luna-info-page--wr64nvjslpdn.code.run
+**Live URL**: https://p01--info-page--wr64nvjslpdn.code.run
 **Repo**: https://github.com/ALee11235/luna-info-page
 
 ## What's Built

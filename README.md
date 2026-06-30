@@ -1,6 +1,6 @@
-# The Money Milker Info Page
+# Luna Info Page
 
-A dark, luxurious info page for The Money Milker's subscribers. Built with Next.js, TypeScript, and Tailwind CSS.
+A dark, luxurious info page for Luna's subscribers. Built with Next.js, TypeScript, and Tailwind CSS.
 
 ## Live URL
 
