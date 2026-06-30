@@ -173,7 +173,7 @@ export default function AdminPage() {
         <div className="admin-header-inner">
           <div className="admin-title-group">
             <span className="admin-badge">Admin</span>
-            <h1 className="font-cormorant">Luna Dashboard</h1>
+            <h1 className="font-cormorant">The Money Milker Dashboard</h1>
           </div>
           <div className="admin-actions">
             <button className="refresh-btn" onClick={fetchData} disabled={loading}>
@@ -209,7 +209,7 @@ export default function AdminPage() {
 
       {/* FOOTER */}
       <footer className="admin-footer">
-        <p>© {new Date().getFullYear()} Luna Admin</p>
+        <p>© {new Date().getFullYear()} The Money Milker Admin</p>
       </footer>
     </div>
   );

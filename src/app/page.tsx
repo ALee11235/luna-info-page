@@ -100,9 +100,9 @@ export default function Home() {
       <div className="min-h-screen flex flex-col md:flex-row md:pb-0 max-w-[500px] md:max-w-[1200px] mx-auto w-full">
         {/* PROFILE HEADER */}
         <div className="profile-header">
-          <div className="avatar" aria-hidden="true">✨</div>
-          <div className="profile-name">Luna</div>
-          <div className="profile-bio">You&apos;ve found my spot 😜</div>
+          <div className="avatar" aria-hidden="true">💰</div>
+          <div className="profile-name">The Money Milker</div>
+          <div className="profile-bio">Pay pig, present yourself 🐷💸</div>
         </div>
 
         {/* LAYOUT: Desktop = sidebar tabs + content | Mobile = stacked */}
@@ -141,9 +141,9 @@ export default function Home() {
 
       {/* FOOTER — outside flex row, always at bottom */}
       <footer className="site-footer">
-        <div className="footer-ornament" aria-hidden="true">✦</div>
-        <p className="footer-text">You&apos;ve found my spot 😜</p>
-        <p className="footer-copy">© {new Date().getFullYear()} Luna. All rights reserved.</p>
+        <div className="footer-ornament" aria-hidden="true">💰</div>
+        <p className="footer-text">Pay pig, present yourself 🐷💸</p>
+        <p className="footer-copy">© {new Date().getFullYear()} The Money Milker. All rights reserved.</p>
       </footer>
     </React.Fragment>
   );

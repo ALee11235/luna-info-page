@@ -1,4 +1,4 @@
-# Design System — Luna Info Page
+# Design System — The Money Milker Info Page
 
 ## Style: Dark & Luxurious
 
